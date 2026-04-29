@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Pedido;
 use \App\Models\Direccion;
+use App\Notifications\PedidoConfirmado;
 
 class CarroController extends Controller
 {
@@ -90,6 +91,9 @@ class CarroController extends Controller
         $pedido->estado_pedido = 'En preparación';
         $pedido->fecha_pedido = now();
         $pedido->save();
+
+        // Le mandamos el correo al usuario autenticado pasándole su pedido y su carrito
+        auth()->user()->notify(new PedidoConfirmado($pedido, $carrito));
 
         session()->forget('carrito');
 

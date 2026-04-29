@@ -32,7 +32,7 @@ class LoginController extends Controller
     {
         // Si el rol es admin, lo mandamos a la ruta secreta que creamos antes
         if ($user->rol === 'admin') {
-            return redirect('/admin-secreto'); // Cuando Daniel tenga el panel real, cambiarás esta URL
+            return redirect('/admin/pedidos'); // Cuando Daniel tenga el panel real, cambiarás esta URL
         }
 
         // Si no es admin (es cliente), lo mandamos a la tienda normal

@@ -18,6 +18,7 @@ class User extends Authenticatable
         'password',
         'telefono',
         'rol',
+        'idioma',
     ];
 
     // 2. Array de campos ocultos
