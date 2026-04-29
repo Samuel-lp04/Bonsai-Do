@@ -54,7 +54,6 @@
         </div>
     </div>
 
-    {{-- Si no hay ningún pedido en la base de datos, mostramos este mensaje amigable --}}
     @if($pedidos->isEmpty())
         <div class="alert alert-info text-center mt-4">
             Aún no se ha realizado ningún pedido en la tienda.

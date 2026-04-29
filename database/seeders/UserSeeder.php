@@ -13,20 +13,18 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Crear el usuario Administrador
         User::create([
             'name' => 'Administrador',
             'email' => 'admin@bonsai.com',
-            'password' => Hash::make('admin123'), // Hash::make encripta la contraseña
-            'rol' => 'admin', // Clave para que funcione tu navbar y middleware
+            'password' => Hash::make('admin123'),
+            'rol' => 'admin',
         ]);
 
-        // 2. Crear un usuario Cliente de prueba
         User::create([
             'name' => 'Cliente de Prueba',
             'email' => 'cliente@bonsai.com',
             'password' => Hash::make('cliente123'),
-            'rol' => 'cliente', // O el valor que uses para los clientes normales
+            'rol' => 'cliente',
         ]);
     }
 }

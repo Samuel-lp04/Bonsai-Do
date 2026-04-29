@@ -11,7 +11,6 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    // 1. Array de campos permitidos (Sintaxis correcta de Laravel)
     protected $fillable = [
         'name',
         'email',
@@ -21,7 +20,6 @@ class User extends Authenticatable
         'idioma',
     ];
 
-    // 2. Array de campos ocultos
     protected $hidden = [
         'password',
         'remember_token',

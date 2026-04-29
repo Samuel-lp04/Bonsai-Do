@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarroController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\PedidoController;
+use App\Http\Middleware\CheckAdmin;
+use App\Http\Controllers\ProfileController;
 
 
-Route::get('/', [\App\Http\Controllers\CarroController::class, 'index']);
+Route::get('/', [CarroController::class, 'index']);
 
 Auth::routes();
 Route::redirect('/home', '/catalogo');
@@ -24,14 +26,14 @@ Route::get('pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.sho
 
 // Grupo de rutas para usuarios logueados
 Route::middleware(['auth'])->group(function () {
-    Route::get('/perfil', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/perfil', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
-    Route::put('/perfil/password', [App\Http\Controllers\ProfileController::class, 'password'])->name('profile.password');
-    Route::delete('/perfil', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/perfil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/perfil/password', [ProfileController::class, 'password'])->name('profile.password');
+    Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 // Grupo de rutas EXCLUSIVAS para Administradores
-Route::middleware(['auth', \App\Http\Middleware\CheckAdmin::class])->group(function () {
+Route::middleware(['auth', CheckAdmin::class])->group(function () {
     Route::resource('admin/productos', ProductoController::class);
     Route::get('admin/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
 });
