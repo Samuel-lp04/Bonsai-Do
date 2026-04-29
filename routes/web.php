@@ -7,13 +7,9 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\PedidoController;
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [\App\Http\Controllers\CarroController::class, 'index']);
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     //CarroController
 Route::get('/catalogo', [CarroController::class, 'index'])->name('catalogo');
@@ -33,6 +29,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/perfil', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('admin/productos', ProductoController::class);
-Route::get('admin/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+// Grupo de rutas EXCLUSIVAS para Administradores
+Route::middleware(['auth', \App\Http\Middleware\CheckAdmin::class])->group(function () {
+    Route::resource('admin/productos', ProductoController::class);
+    Route::get('admin/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+});
 
