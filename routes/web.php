@@ -23,3 +23,11 @@ Route::middleware([\App\Http\Middleware\CheckAdmin::class])->group(function () {
     });
 
 });
+
+// Grupo de rutas para usuarios logueados
+Route::middleware(['auth'])->group(function () {
+    Route::get('/perfil', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/perfil', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/perfil/password', [App\Http\Controllers\ProfileController::class, 'password'])->name('profile.password');
+    Route::delete('/perfil', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
+});
