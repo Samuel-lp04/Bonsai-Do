@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->string('rol')->default('cliente');
-            $table->integer('telefono')->nullable();
+            $table->string('telefono')->unique();
             $table->timestamps();
         });
 

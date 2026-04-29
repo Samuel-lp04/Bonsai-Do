@@ -19,4 +19,15 @@ class Pedido extends Model
     protected $casts = [
         'fecha_pedido' => 'date',
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+    public function detalles()
+    {
+        return $this->hasMany(DetallePedido::class);
+    }
 }

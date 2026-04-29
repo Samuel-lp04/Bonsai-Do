@@ -51,6 +51,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'telefono' => ['required', 'string', 'max:20'],
         ]);
     }
 
@@ -61,10 +62,19 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        // 1. Creamos el usuario y lo guardamos en la variable $user
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'telefono' => $data['telefono'],
+            'rol' => 'cliente',
         ]);
+
+        // 2. Le enviamos la notificación de bienvenida
+        $user->notify(new \App\Notifications\WelcomeEmail());
+
+        // 3. Devolvemos el usuario para que Laravel inicie su sesión
+        return $user;
     }
 }
