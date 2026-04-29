@@ -13,4 +13,13 @@ class PedidoController extends Controller
             
             return view('admin.pedidos.index', compact('pedidos'));
         }
+    
+
+
+    public function show($id)
+    {
+        $pedido = Pedido::with('detalles.producto')->findOrFail($id);
+
+        return view('pedidos.show', compact('pedido'));
+    }
 }

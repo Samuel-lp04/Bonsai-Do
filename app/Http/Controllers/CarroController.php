@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Pedido;
+use App\Models\DetallePedido;
 use \App\Models\Direccion;
 use App\Notifications\PedidoConfirmado;
 
@@ -92,7 +93,21 @@ class CarroController extends Controller
         $pedido->fecha_pedido = now();
         $pedido->save();
 
-        // Le mandamos el correo al usuario autenticado pasándole su pedido y su carrito
+        foreach ($carrito as $producto_id => $item) {
+            $detalle = new DetallePedido();
+            $detalle->pedido_id = $pedido->id;
+            $detalle->producto_id = $producto_id;
+            $detalle->cantidad = $item['cantidad'];
+            $detalle->precio_unitario = $item['precio'];
+            $detalle->save();
+
+            $producto = Producto::find($producto_id);
+            if ($producto) {
+                $producto->stock = $producto->stock - $item['cantidad'];
+                $producto->save();
+            }
+        }
+
         auth()->user()->notify(new PedidoConfirmado($pedido, $carrito));
 
         session()->forget('carrito');

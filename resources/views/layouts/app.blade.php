@@ -14,7 +14,7 @@
 </head>
 <body>
 	<div id="app">
-		<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+		<nav class="navbar navbar-expand-md bg-secondary shadow-sm">
 			<div class="container">
 				<a class="navbar-brand py-0" href="{{ url('/') }}">
                     <img src="{{ asset('images/logo.png') }}" alt="Logo Bonsai Do" style="height: 80px; width: auto;">
@@ -26,7 +26,7 @@
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<!-- Lado Izquierdo de la Barra -->
 					<ul class="navbar-nav me-auto">
-						@auth @if(Auth::user()->rol === 'admin')
+						@if(Auth::check() && Auth::user()->rol === 'admin')
 						<li class="nav-item">
 							<a class="nav-link text-success fw-bold" href="{{ route('pedidos.index') }}">📦 Pedidos Clientes</a>
 						</li>
@@ -45,7 +45,7 @@
                         </span>
                     </a>
 						</li>
-						@endif @endauth
+						@endif 			
 					</ul>
 
 					<!-- Lado Derecho de la Barra -->

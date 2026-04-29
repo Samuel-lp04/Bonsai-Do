@@ -9,7 +9,7 @@
     <div class="card shadow-sm">
         <div class="card-body p-0">
             <table class="table table-hover table-bordered mb-0">
-                <thead class="table-dark">
+                <thead class="table-primary">
                     <tr>
                         <th>ID Pedido</th>
                         <th>Cliente</th>
@@ -24,7 +24,6 @@
                     <tr>
                         <td class="align-middle fw-bold">#{{ $pedido->id }}</td>
                         
-                        {{-- OJO: Asegúrate de que tu relación en el modelo se llama 'usuario' o 'user' --}}
                         <td class="align-middle">{{ $pedido->user->name ?? 'Cliente Desconocido' }}</td>
                         
                         <td class="align-middle">{{ $pedido->created_at->format('d/m/Y H:i') }}</td>
@@ -32,21 +31,21 @@
                         <td class="align-middle fw-bold text-success">{{ number_format($pedido->total, 2, ',', '.') }} €</td>
                         
                         <td class="align-middle">
-                            @if($pedido->estado == 'pendiente')
-                                <span class="badge bg-warning text-dark px-3 py-2">Pendiente</span>
-                            @elseif($pedido->estado == 'pagado' || $pedido->estado == 'completado')
-                                <span class="badge bg-success px-3 py-2">Completado</span>
-                            @elseif($pedido->estado == 'cancelado')
+                           @if($pedido->estado_pedido == 'En preparación')
+                                <span class="badge bg-warning text-dark px-3 py-2">En preparación</span>
+                            @elseif($pedido->estado_pedido == 'En camino')
+                                <span class="badge bg-info text-dark px-3 py-2">En camino</span>
+                            @elseif($pedido->estado_pedido == 'cancelado')
                                 <span class="badge bg-danger px-3 py-2">Cancelado</span>
+                            @elseif($pedido->estado_pedido == 'completado')
+                                <span class="badge bg-success px-3 py-2">Completado</span>
                             @else
-                                <span class="badge bg-secondary px-3 py-2">{{ ucfirst($pedido->estado) }}</span>
-                            @endif
+                                <span class="badge bg-secondary px-3 py-2">{{ ucfirst($pedido->estado_pedido) }}</span>
+                            @endif      
                         </td>
                         
                         <td class="align-middle text-center">
-                            <a href="#" class="btn btn-info btn-sm text-white">
-                                <i class="bi bi-eye"></i> Ver Detalles
-                            </a>
+                            <a href="{{ route('pedidos.show', $pedido->id) }}" class="btn btn-primary text-white">Ver Detalles</a>
                         </td>
                     </tr>
                     @endforeach

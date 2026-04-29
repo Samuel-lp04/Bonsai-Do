@@ -6,7 +6,7 @@
     <a href="{{ route('productos.create') }}" class="btn btn-primary mb-3">Añadir Nuevo Bonsái</a>
     
     <table class="table table-bordered">
-        <thead>
+        <thead class="table-primary">
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
