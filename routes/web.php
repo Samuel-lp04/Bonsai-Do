@@ -15,6 +15,7 @@ Auth::routes();
 Route::redirect('/home', '/catalogo');
     //CarroController
 Route::get('/catalogo', [CarroController::class, 'index'])->name('catalogo');
+Route::get('/catalogo/categoria/{id}', [CarroController::class, 'index'])->name('catalogo.categoria');
 Route::post('/carrito/add/{id}', [CarroController::class, 'add'])->name('carrito.add');
 Route::get('/carrito', [CarroController::class, 'verCarrito'])->name('carrito.ver');
 Route::get('/checkout', [CarroController::class, 'checkout'])->middleware('auth')->name('checkout');
