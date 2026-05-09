@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use Illuminate\Support\Facades\DB;
@@ -31,30 +30,24 @@ class ProductoController extends Controller
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required',
             'precio' => 'required|numeric|min:0',
-            'categorias' => 'required|array', // Validamos que llegue un array de IDs
-            'categorias.*' => 'exists:categorias,id', // Que esos IDs existan realmente
+            'categorias' => 'required|array',
+            'categorias.*' => 'exists:categorias,id',
             'stock' => 'required|integer|min:0',
             'imagen_url' => 'required|url',
         ]);
 
         try {
-            // 2. Iniciamos la Transacción: Es un "Todo o Nada"
             DB::transaction(function () use ($request) {
                 
-                // Creamos el producto. (Asegúrate de que tus campos estén en el $fillable del Modelo)
                 $producto = Producto::create($request->except('categorias'));
 
-                // 3. Magia de sync(): Vincula el producto con todas las categorías recibidas
                 $producto->categorias()->sync($request->categorias);
                 
             });
 
-            // Si llegamos aquí, ambas cosas se guardaron perfectamente (Commit)
             return redirect()->route('admin.productos.index')->with('success', '¡Bonsái creado y categorizado correctamente!');
 
         } catch (Exception $e) {
-            // 4. Manejo de Errores: Si algo falla arriba, se hace un Rollback automático
-            // Redirigimos atrás devolviendo lo que el usuario había escrito (withInput)
             return back()->withInput()->with('error', 'Error crítico al guardar: No se ha podido completar la operación. Detalles: ' . $e->getMessage());
         }
     }
@@ -89,14 +82,10 @@ class ProductoController extends Controller
         try {
             DB::transaction(function () use ($request, $id) {
                 
-                // Buscamos el producto
                 $producto = Producto::findOrFail($id);
                 
-                // Actualizamos sus datos básicos
                 $producto->update($request->except('categorias'));
 
-                // Actualizamos las categorías.
-                // sync() es inteligente: borra las que ya no están marcadas y añade las nuevas.
                 $producto->categorias()->sync($request->categorias);
                 
             });

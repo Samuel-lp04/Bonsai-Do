@@ -11,11 +11,18 @@ use App\Notifications\PedidoConfirmado;
 
 class CarroController extends Controller
 {
-    public function index()
-    {
-        $productos = Producto::all();
-        return view('catalogo', compact('productos'));
+    public function index($categoria_id = null)
+{
+    $categorias = \App\Models\Categoria::all();
+
+    if ($categoria_id) {
+        $productos = \App\Models\VistaCatalogo::where('categoria_id', $categoria_id)->get();
+    } else {
+        $productos = \App\Models\VistaCatalogo::all()->unique('producto_id');
     }
+
+    return view('catalogo', compact('productos', 'categorias', 'categoria_id'));
+}
 
     public function add(Request $request, $id)
     {
