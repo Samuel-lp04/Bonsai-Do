@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Middleware\CheckAdmin;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoriaController;
 
 
 Route::get('/', [CarroController::class, 'index']);
@@ -37,5 +38,6 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', CheckAdmin::class])->group(function () {
     Route::resource('admin/productos', ProductoController::class);
     Route::get('admin/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+    Route::resource('admin/categorias', CategoriaController::class);
 });
 

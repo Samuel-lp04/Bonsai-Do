@@ -16,7 +16,7 @@
             <p class="text-muted">Encuentra la paz en la naturaleza</p>
         </div>
 
-        <!--============================================================================================================-->
+
         <div class="row mb-5">
             <div class="col-12 text-center">
                 <a href="{{ route('catalogo') }}"
@@ -32,15 +32,15 @@
                 @endforeach
             </div>
         </div>
-        <!--============================================================================================================-->
+
         <div class="row row-cols-1 row-cols-md-3 g-4">
             @foreach($productos as $producto)
                 <div class="col">
                     <div class="card h-100 shadow-sm border-0 card-bonsai">
                         <div style="height: 250px; overflow: hidden;">
-                            <img src="{{ $producto->imagen_url }}" class="card-img-top h-100 w-100" style="object-fit: cover;"
-                                alt="{{ $producto->producto_nombre }}"
-                                onerror="this.onerror=null; this.src='https://placehold.co/400x300?text=Bonsai+Do';">
+                            <img src="{{ asset($producto->imagen_url) }}" class="card-img-top h-100 w-100" style="object-fit: cover;"
+                                alt="{{ $producto->producto_nombre }}">
+                                <p class="text-danger mt-2">Ruta generada: {{ asset($producto->imagen_url) }}</p>
                         </div>
 
                         <div class="card-body d-flex flex-column">

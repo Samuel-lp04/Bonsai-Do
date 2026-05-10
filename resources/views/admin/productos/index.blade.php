@@ -11,6 +11,7 @@
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Precio</th>
+                <th>Categoria</th>
                 <th>Stock</th>
                 <th>Acciones</th>
             </tr>
@@ -21,6 +22,13 @@
                 <td>{{ $producto->id }}</td>
                 <td>{{ $producto->nombre }}</td>
                 <td>{{ $producto->precio }} €</td>
+                <td>
+                    @forelse($producto->categorias as $categoria)
+                        <span class="badge bg-success">{{ $categoria->nombre }}</span>
+                    @empty
+                        <span class="text-muted small">Sin categoría</span>
+                    @endforelse
+                </td>
                 <td>{{ $producto->stock }}</td>
                 <td>
                     <a href="{{ route('productos.edit', $producto->id) }}" class="btn btn-warning btn-sm">Editar</a>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Producto;
+use App\Models\Categoria;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -19,7 +20,9 @@ class ProductoController extends Controller
     
     public function create()
     {
-        return view('admin.productos.create');
+        $categorias = Categoria::all();
+
+        return view('admin.productos.create', compact('categorias'));
     }
 
     
@@ -30,7 +33,7 @@ class ProductoController extends Controller
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required',
             'precio' => 'required|numeric|min:0',
-            'categorias' => 'required|array',
+            'categorias' => 'nullable|array',
             'categorias.*' => 'exists:categorias,id',
             'stock' => 'required|integer|min:0',
             'imagen_url' => 'required|url',
@@ -62,23 +65,26 @@ class ProductoController extends Controller
     public function edit(string $id)
     {
         $producto = Producto::findOrFail($id);
-    
-        return view('admin.productos.edit', compact('producto'));
+        $categorias = Categoria::all();
+        $categoriasSeleccionadas = $producto->categorias;
+        $idCategoriasSeleccionadas = $categoriasSeleccionadas->pluck('id')->toArray();
+
+        return view('admin.productos.edit', compact('producto', 'categorias', 'idCategoriasSeleccionadas'));
     }
 
     public function update(Request $request, string $id)
     {
-
+    
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required',
             'precio' => 'required|numeric|min:0',
-            'categorias' => 'required|array',
+            'categorias' => 'nullable|array',
             'categorias.*' => 'exists:categorias,id',
             'stock' => 'required|integer|min:0',
             'imagen_url' => 'required|url',
         ]);
-
+        
         try {
             DB::transaction(function () use ($request, $id) {
                 
@@ -90,7 +96,7 @@ class ProductoController extends Controller
                 
             });
 
-            return redirect()->route('admin.productos.index')->with('success', '¡Bonsái actualizado correctamente!');
+            return redirect()->route('productos.index')->with('success', '¡Bonsái actualizado correctamente!');
 
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Error crítico al actualizar: Los cambios han sido revertidos por seguridad. Detalles: ' . $e->getMessage());
@@ -101,9 +107,9 @@ class ProductoController extends Controller
     public function destroy(string $id)
     {
         $producto = Producto::findOrFail($id);
-    
+        $producto->categorias()->detach();
         $producto->delete();
 
-        return redirect()->route('admin.productos.index')->with('success', 'Bonsái eliminado correctamente');
+        return redirect()->route('productos.index')->with('success', 'Bonsái eliminado correctamente');
     }
 }

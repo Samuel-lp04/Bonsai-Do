@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
             'name' => 'Administrador',
             'email' => 'admin@bonsai.com',
             'password' => Hash::make('admin123'),
+            'telefono'=> '123123123',
             'rol' => 'admin',
         ]);
 
@@ -24,6 +25,7 @@ class UserSeeder extends Seeder
             'name' => 'Cliente de Prueba',
             'email' => 'cliente@bonsai.com',
             'password' => Hash::make('cliente123'),
+            'telefono'=> '321321321',
             'rol' => 'cliente',
         ]);
     }
