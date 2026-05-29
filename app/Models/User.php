@@ -32,4 +32,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function favoritos(){
+        return $this->belongsToMany(Producto::class, 'favoritos', 'user_id', 'producto_id')->withPivot('tiempoCreacion')->withTimestamps();
+    }
 }

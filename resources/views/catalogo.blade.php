@@ -38,9 +38,9 @@
                 <div class="col">
                     <div class="card h-100 shadow-sm border-0 card-bonsai">
                         <div style="height: 250px; overflow: hidden;">
-                            <img src="{{ asset($producto->imagen_url) }}" class="card-img-top h-100 w-100" style="object-fit: cover;"
-                                alt="{{ $producto->producto_nombre }}">
-                                <p class="text-danger mt-2">Ruta generada: {{ asset($producto->imagen_url) }}</p>
+                            <img src="{{ asset($producto->imagen_url) }}" class="card-img-top h-100 w-100"
+                                style="object-fit: cover;" alt="{{ $producto->producto_nombre }}">
+                            <p class="text-danger mt-2">Ruta generada: {{ asset($producto->imagen_url) }}</p>
                         </div>
 
                         <div class="card-body d-flex flex-column">
@@ -57,14 +57,29 @@
                             </p>
 
                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="fs-4 fw-bold">{{ number_format($producto->precio, 2) }} €</span>
+                                <span class="fs-4 fw-bold text-dark">{{ number_format($producto->precio, 2) }} €</span>
 
-                                <form action="{{ route('carrito.add', $producto->producto_id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-primary rounded-pill px-3">
-                                        <i class="bi bi-cart-plus"></i> + Comprar
-                                    </button>
-                                </form>
+                                <div class="d-flex gap-2">
+                                    @auth
+                                        @php
+                                            $esFavorito = Auth::user()->favoritos->contains('id', $producto->producto_id);
+                                        @endphp
+                                        <form action="{{ route('favoritos.toggle', $producto->producto_id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit"
+                                                class="btn {{ $esFavorito ? 'btn-pizarra' : 'btn-outline-pizarra' }} rounded px-2" title="Favorito">
+                                                <i class="bi bi-heart-fill fs-5"></i>
+                                            </button>
+                                        </form>
+                                    @endauth
+
+                                    <form action="{{ route('carrito.add', $producto->producto_id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary rounded-pill px-3">
+                                            <i class="bi bi-cart-plus"></i> + Comprar
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
