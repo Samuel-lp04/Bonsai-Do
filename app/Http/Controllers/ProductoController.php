@@ -12,7 +12,7 @@ class ProductoController extends Controller
     
     public function index()
     {
-        $productos = Producto::all();
+        $productos = Producto::with('categorias')->get();
     
         return view('admin.productos.index', compact('productos'));
     }
@@ -31,12 +31,18 @@ class ProductoController extends Controller
 
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'descripcion' => 'required',
-            'precio' => 'required|numeric|min:0',
-            'categorias' => 'nullable|array',
+            'descripcion' => 'required|string|max:1000', 
+            'precio' => 'required|numeric|min:0', 
+            'stock' => 'required|integer|min:0', 
+            'imagen_url' => 'required|string|max:255',
+            'descuento_id' => 'nullable|exists:descuentos,id', 
+            'categorias' => 'required|array|min:1', 
             'categorias.*' => 'exists:categorias,id',
-            'stock' => 'required|integer|min:0',
-            'imagen_url' => 'required|url',
+        ], [
+            'precio.min' => 'El precio de un producto no puede ser negativo.',
+            'stock.min' => 'El stock mínimo permitido es 0.',
+            'categorias.min' => 'Debes asignar al menos una categoría al bonsái.',
+            'descuento_id.exists' => 'El descuento seleccionado no es válido en el sistema.'
         ]);
 
         try {
@@ -48,7 +54,7 @@ class ProductoController extends Controller
                 
             });
 
-            return redirect()->route('admin.productos.index')->with('success', '¡Bonsái creado y categorizado correctamente!');
+            return redirect()->route('productos.index')->with('success', '¡Bonsái creado y categorizado correctamente!');
 
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Error crítico al guardar: No se ha podido completar la operación. Detalles: ' . $e->getMessage());
@@ -77,12 +83,18 @@ class ProductoController extends Controller
     
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'descripcion' => 'required',
-            'precio' => 'required|numeric|min:0',
-            'categorias' => 'nullable|array',
+            'descripcion' => 'required|string|max:1000', 
+            'precio' => 'required|numeric|min:0', 
+            'stock' => 'required|integer|min:0', 
+            'imagen_url' => 'required|string|max:255',
+            'descuento_id' => 'nullable|exists:descuentos,id', 
+            'categorias' => 'required|array|min:1', 
             'categorias.*' => 'exists:categorias,id',
-            'stock' => 'required|integer|min:0',
-            'imagen_url' => 'required|url',
+        ], [
+            'precio.min' => 'El precio de un producto no puede ser negativo.',
+            'stock.min' => 'El stock mínimo permitido es 0.',
+            'categorias.min' => 'Debes asignar al menos una categoría al bonsái.',
+            'descuento_id.exists' => 'El descuento seleccionado no es válido en el sistema.'
         ]);
         
         try {
@@ -106,10 +118,17 @@ class ProductoController extends Controller
     
     public function destroy(string $id)
     {
-        $producto = Producto::findOrFail($id);
-        $producto->categorias()->detach();
-        $producto->delete();
+        try {
+            DB::transaction(function () use ($id) {
+                $producto = Producto::findOrFail($id);
+                $producto->categorias()->detach();
+                $producto->delete();
+            });
 
-        return redirect()->route('productos.index')->with('success', 'Bonsái eliminado correctamente');
+            return redirect()->route('productos.index')->with('success', 'Bonsái eliminado correctamente.');
+
+        } catch (Exception $e) {
+            return redirect()->route('productos.index')->with('error', 'No se puede eliminar el producto porque está siendo utilizado en pedidos o favoritos.');
+        }
     }
 }
