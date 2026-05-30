@@ -21,6 +21,7 @@
                                     <th scope="col" class="py-3">Fecha</th>
                                     <th scope="col" class="py-3">Total</th>
                                     <th scope="col" class="pe-4 py-3 text-end">Estado</th>
+                                    <th scope="col" class="pe-4 py-3 text-end">Detalles</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -46,6 +47,9 @@
                                                 <span
                                                     class="badge bg-secondary px-3 py-2 rounded-pill">{{ $pedido->estado_pedido }}</span>
                                             @endif
+                                        </td>
+                                        <td class="pe-4 py-3 text-end">
+                                            <a href="{{ route('pedidos.show', $pedido->id) }}" class="btn btn-info text-white">Ver Detalles</a>
                                         </td>
                                     </tr>
                                 @endforeach

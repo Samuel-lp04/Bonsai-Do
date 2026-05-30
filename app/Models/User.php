@@ -11,7 +11,6 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    // 1. Array de campos permitidos (Sintaxis correcta de Laravel)
     protected $fillable = [
         'name',
         'email',
@@ -21,7 +20,6 @@ class User extends Authenticatable
         'idioma',
     ];
 
-    // 2. Array de campos ocultos
     protected $hidden = [
         'password',
         'remember_token',
@@ -33,5 +31,9 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function favoritos(){
+        return $this->belongsToMany(Producto::class, 'favoritos', 'user_id', 'producto_id')->withPivot('tiempoCreacion')->withTimestamps();
     }
 }

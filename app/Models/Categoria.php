@@ -8,6 +8,7 @@ class Categoria extends Model
 {
     protected $table = "categorias";
     protected $guarded = [];
+    protected $fillable = ['nombre', 'descripcion'];
 
     public function productos(){
         return $this->belongsToMany(Producto::class, 'categoria_producto');

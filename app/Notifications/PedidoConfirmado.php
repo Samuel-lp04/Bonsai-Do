@@ -13,7 +13,6 @@ class PedidoConfirmado extends Notification
     public $pedido;
     public $carrito;
 
-    // El constructor recibe el pedido y los artículos del carrito
     public function __construct($pedido, $carrito)
     {
         $this->pedido = $pedido;
@@ -35,12 +34,10 @@ class PedidoConfirmado extends Notification
                     ->line('---')
                     ->line('📦 RESUMEN DE TU COMPRA:');
 
-        // Bucle para añadir cada producto del carrito como una línea en el correo
         foreach ($this->carrito as $item) {
             $mail->line('🌱 ' . $item['cantidad'] . 'x ' . $item['nombre'] . ' ...... ' . ($item['precio'] * $item['cantidad']) . '€');
         }
 
-        // Añadimos el total y el botón final
         $mail->line('---')
              ->line('💰 TOTAL PAGADO: ' . $this->pedido->total . '€')
              ->action('Ver estado de mis pedidos', route('mis-pedidos'))

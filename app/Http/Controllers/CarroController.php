@@ -5,16 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Pedido;
+use App\Models\DetallePedido;
 use \App\Models\Direccion;
 use App\Notifications\PedidoConfirmado;
 
 class CarroController extends Controller
 {
-    public function index()
-    {
-        $productos = Producto::all();
-        return view('catalogo', compact('productos'));
+    public function index($categoria_id = null)
+{
+    $categorias = \App\Models\Categoria::all();
+
+    if ($categoria_id) {
+        $productos = \App\Models\VistaCatalogo::where('categoria_id', $categoria_id)->get();
+    } else {
+        $productos = \App\Models\VistaCatalogo::all()->unique('producto_id');
     }
+
+    return view('catalogo', compact('productos', 'categorias', 'categoria_id'));
+}
 
     public function add(Request $request, $id)
     {
@@ -92,7 +100,21 @@ class CarroController extends Controller
         $pedido->fecha_pedido = now();
         $pedido->save();
 
-        // Le mandamos el correo al usuario autenticado pasándole su pedido y su carrito
+        foreach ($carrito as $producto_id => $item) {
+            $detalle = new DetallePedido();
+            $detalle->pedido_id = $pedido->id;
+            $detalle->producto_id = $producto_id;
+            $detalle->cantidad = $item['cantidad'];
+            $detalle->precio_unitario = $item['precio'];
+            $detalle->save();
+
+            $producto = Producto::find($producto_id);
+            if ($producto) {
+                $producto->stock = $producto->stock - $item['cantidad'];
+                $producto->save();
+            }
+        }
+
         auth()->user()->notify(new PedidoConfirmado($pedido, $carrito));
 
         session()->forget('carrito');
