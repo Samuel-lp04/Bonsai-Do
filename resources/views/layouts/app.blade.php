@@ -40,6 +40,9 @@
                                 <a class="nav-link text-success fw-bold" href="{{ url('admin/categorias') }}">🔖 Gestión
                                     Categorías</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-success fw-bold" href="{{ url('admin/favoritos') }}">❤️ Estadísticas de favoritos</a>
+                            </li>
                         @else
                             <li class="nav-item">
                                 <a class="nav-link text-success fw-bold" href="{{ route('catalogo') }}">📖 Catálogo</a>

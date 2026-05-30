@@ -41,5 +41,6 @@ Route::middleware(['auth', CheckAdmin::class])->group(function () {
     Route::resource('admin/productos', ProductoController::class);
     Route::get('admin/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
     Route::resource('admin/categorias', CategoriaController::class);
+    Route::get('admin/favoritos', [FavoritoController::class, 'listar'])->name('admin.favoritos.index');
 });
 

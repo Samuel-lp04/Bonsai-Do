@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Producto;
 
 class FavoritoController extends Controller
 {
@@ -13,4 +14,10 @@ class FavoritoController extends Controller
         return back()->with('success', 'Lista de favoritos actualizada.');
 
     }
+
+    public function listar(){
+        $productosTop = Producto::withCount('usuariosFavoritos')->orderBy('usuarios_favoritos_count', 'desc')->get();
+        return view('admin.favoritos.index', compact('productosTop'));
+    }
+
 }

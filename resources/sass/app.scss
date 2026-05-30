@@ -55,6 +55,17 @@ $border-radius: 0.25rem;
     }
 }
 
+.btn-outline-pizarra-oscuro {
+    color: $body-color;
+    border-color: $body-color;
+    background-color: transparent;
+    
+    &:hover {
+        background-color: $body-color;
+        color: $body-bg;
+    }
+}
+
 .btn-pizarra {
     background-color: $primary;
     color: $body-bg;
