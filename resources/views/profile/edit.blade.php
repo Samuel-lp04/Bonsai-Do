@@ -30,7 +30,6 @@
                             <div class="row">
                                 <div class="col-md-6 mb-4">
                                     <label for="name" class="form-label text-muted fw-semibold">Nombre completo</label>
-                                    <!-- Le hemos devuelto el borde estándar para que sea intuitivo -->
                                     <input type="text"
                                         class="form-control py-2 px-3 border @error('name') is-invalid @enderror" id="name"
                                         name="name" value="{{ old('name', Auth::user()->name) }}" required>
@@ -121,7 +120,8 @@
                                 @foreach($favoritos as $producto)
                                     <div class="col">
                                         <div class="card h-100 border-0 shadow-sm card-bonsai">
-                                            <img src="{{ asset($producto->imagen_url) }}" class="card-img-top h-100 w-100" style="object-fit: cover;" alt="{{ $producto->producto_nombre }}">
+                                            <img src="{{ asset($producto->imagen_url) }}" class="card-img-top h-100 w-100"
+                                                style="object-fit: cover;" alt="{{ $producto->producto_nombre }}">
                                             <div class="card-body text-center">
                                                 <h3 class="fs-5 fw-bold">{{ $producto->nombre }}</h3>
                                                 <p class="fs-4 fw-bold text-dark">{{ number_format($producto->precio, 2) }} €</p>
@@ -138,6 +138,15 @@
                                 @endforeach
                             </div>
                         @endif
+                    </div>
+                </div>
+
+                <!-- SECCION DE PEDIDOS -->
+
+                <div class="card shadow-sm border-0 mb-4 p-3">
+                    <div class="card-body">
+                        <h3 class="fw-bold mb-4">Mis Pedidos recientes</h3>
+                        @include('pedidos.partial.mis-pedidos')
                     </div>
                 </div>
 

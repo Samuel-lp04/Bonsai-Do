@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use \App\Models\Pedido;
 
 class ProfileController extends Controller
 {
@@ -12,8 +13,9 @@ class ProfileController extends Controller
     public function edit()
     {
         $favoritos = auth()->user()->favoritos;
+        $pedidos = auth()->user()->pedidos ?? Pedido::where('user_id', auth()->id())->get();
 
-        return view('profile.edit', compact('favoritos')); 
+        return view('profile.edit', compact('favoritos', 'pedidos')); 
     }
 
     
