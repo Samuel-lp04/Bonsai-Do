@@ -34,7 +34,7 @@
     </table>
 
     <div class="mt-4">
-    <a href="{{ url()->previous() }}" class="btn btn-secondary">Volver al Listado</a>
+    <a href="{{ url()->previous() }}" class="btn btn-secondary">Volver atrás</a>
     </div>
 </div>
 @endsection
