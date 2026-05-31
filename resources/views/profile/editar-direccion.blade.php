@@ -37,11 +37,10 @@
                         </div>
 
                         <div class="mt-4 d-flex justify-content-between">
-                            <a href="{{ route('profile.edit') }}" class="btn btn-outline-secondary">Cancelar</a>
+                            <a href="{{ route('profile.edit') }}" class="btn btn-bonsai">Cancelar</a>
                             <button type="submit" class="btn btn-pizarra">Guardar Cambios</button>
                         </div>
                     </form>
-
                 </div>
             </div>
 

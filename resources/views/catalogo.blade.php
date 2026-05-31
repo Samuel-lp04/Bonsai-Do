@@ -61,12 +61,6 @@
 
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fs-4 fw-bold text-dark">{{ number_format($producto->precio, 2) }} €</span>
-                                <form action="{{ route('carrito.add', $producto->producto_id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-primary rounded-pill px-3">
-                                        <i class="bi bi-cart-plus"></i>@lang('messages.Boton_compra')
-                                    </button>
-                                </form>
                                 <div class="d-flex gap-2">
                                     @auth
                                         @php
