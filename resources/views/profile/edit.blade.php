@@ -7,8 +7,8 @@
 
                 <!-- Título de la página -->
                 <div class="text-center mb-5">
-                    <h1 class="display-5 fw-bold text-dark">Mi Perfil</h1>
-                    <p class="text-muted">Gestiona tus datos personales y credenciales de acceso</p>
+                    <h1 class="display-5 fw-bold text-dark">@lang('messages.Perfil_titulo')</h1>
+                    <p class="text-muted">@lang('messages.Perfil_subtitulo')</p>
                 </div>
 
                 <!-- Mensaje de éxito flotante -->
@@ -22,14 +22,14 @@
                 <!-- TARJETA 1: Editar Datos Básicos -->
                 <div class="card shadow-sm border-0 mb-4 p-4">
                     <div class="card-body">
-                        <h3 class="fw-bold mb-4">Datos Personales</h3>
+                        <h3 class="fw-bold mb-4">@lang('messages.Datos')</h3>
                         <form method="POST" action="{{ route('profile.update') }}">
                             @csrf
                             @method('PUT')
 
                             <div class="row">
                                 <div class="col-md-6 mb-4">
-                                    <label for="name" class="form-label text-muted fw-semibold">Nombre completo</label>
+                                    <label for="name" class="form-label text-muted fw-semibold">@lang('messages.Nombre')</label>
                                     <!-- Le hemos devuelto el borde estándar para que sea intuitivo -->
                                     <input type="text"
                                         class="form-control py-2 px-3 border @error('name') is-invalid @enderror" id="name"
@@ -38,7 +38,7 @@
                                 </div>
 
                                 <div class="col-md-6 mb-4">
-                                    <label for="telefono" class="form-label text-muted fw-semibold">Teléfono</label>
+                                    <label for="telefono" class="form-label text-muted fw-semibold">@lang('messages.Telefono')</label>
                                     <input type="text"
                                         class="form-control py-2 px-3 border @error('telefono') is-invalid @enderror"
                                         id="telefono" name="telefono" value="{{ old('telefono', Auth::user()->telefono) }}"
@@ -48,7 +48,7 @@
                             </div>
 
                             <div class="mb-4">
-                                <label for="email" class="form-label text-muted fw-semibold">Correo electrónico</label>
+                                <label for="email" class="form-label text-muted fw-semibold">@lang('messages.Correo_Electronico')</label>
                                 <input type="email"
                                     class="form-control py-2 px-3 border @error('email') is-invalid @enderror" id="email"
                                     name="email" value="{{ old('email', Auth::user()->email) }}" required>
@@ -56,7 +56,7 @@
                             </div>
 
                             <div class="text-end">
-                                <button type="submit" class="btn btn-primary px-4 py-2">Guardar Cambios</button>
+                                <button type="submit" class="btn btn-primary px-4 py-2">@lang('messages.Guardar_Cambios')</button>
                             </div>
                         </form>
                     </div>
@@ -65,14 +65,13 @@
                 <!-- TARJETA 2: Cambiar Contraseña -->
                 <div class="card shadow-sm border-0 mb-4 p-4">
                     <div class="card-body">
-                        <h3 class="fw-bold mb-4">Seguridad de la Cuenta</h3>
+                        <h3 class="fw-bold mb-4">@lang('messages.Seguridad')</h3>
                         <form method="POST" action="{{ route('profile.password') }}">
                             @csrf
                             @method('PUT')
 
                             <div class="mb-4">
-                                <label for="current_password" class="form-label text-muted fw-semibold">Contraseña
-                                    actual</label>
+                                <label for="current_password" class="form-label text-muted fw-semibold">@lang('messages.Contraseña_Actual')</label>
                                 <input type="password"
                                     class="form-control py-2 px-3 border @error('current_password') is-invalid @enderror"
                                     id="current_password" name="current_password" required>
@@ -81,7 +80,7 @@
 
                             <div class="row">
                                 <div class="col-md-6 mb-4">
-                                    <label for="password" class="form-label text-muted fw-semibold">Nueva contraseña</label>
+                                    <label for="password" class="form-label text-muted fw-semibold">@lang('messages.Nueva_Contraseña')</label>
                                     <input type="password"
                                         class="form-control py-2 px-3 border @error('password') is-invalid @enderror"
                                         id="password" name="password" required>
@@ -89,16 +88,14 @@
                                 </div>
 
                                 <div class="col-md-6 mb-4">
-                                    <label for="password_confirmation" class="form-label text-muted fw-semibold">Confirmar
-                                        contraseña</label>
+                                    <label for="password_confirmation" class="form-label text-muted fw-semibold">@lang('messages.Confirmar_Contraseña')</label>
                                     <input type="password" class="form-control py-2 px-3 border" id="password_confirmation"
                                         name="password_confirmation" required>
                                 </div>
                             </div>
 
                             <div class="text-end">
-                                <button type="submit" class="btn btn-outline-primary px-4 py-2">Actualizar
-                                    Contraseña</button>
+                                <button type="submit" class="btn btn-outline-primary px-4 py-2">@lang('messages.Actualizar_Contraseña')</button>
                             </div>
                         </form>
                     </div>
@@ -107,13 +104,13 @@
                 <!-- LISTA DE FAVORITOS -->
                 <div class="card shadow-sm border-0 mb-4 p-3">
                     <div class="card-body">
-                        <h3 class="fw-bold mb-4">Mis Bonsais favoritos</h3>
+                        <h3 class="fw-bold mb-4">@lang('messages.Bonsais_Fav')</h3>
 
                         @if($favoritos->isEmpty())
                             <div class="text-center py-4">
                                 <i class="bi bi-heart text-muted display-1"></i>
-                                <p class="text-muted mt-3">Aún no has guardado ningún bonsái en tus favoritos.</p>
-                                <a href="{{ route('catalogo') }}" class="btn btn-outline-success mt-2">Explorar Catálogo</a>
+                                <p class="text-muted mt-3">@lang('messages.No_Fav')</p>
+                                <a href="{{ route('catalogo') }}" class="btn btn-outline-success mt-2">@lang('messages.Explorar_Catálogo')</a>
                             </div>
 
                         @else
@@ -129,7 +126,7 @@
                                                 <form action="{{ route('favoritos.toggle', $producto->id) }}" method="POST">
                                                     @csrf
                                                     <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
-                                                        <i class="bi bi-heartbreak"></i> Quitar
+                                                        <i class="bi bi-heartbreak"></i> @lang('messages.Quitar_Fav')
                                                     </button>
                                                 </form>
                                             </div>
@@ -145,7 +142,7 @@
                 <div class="text-center mt-5 mb-4">
                     <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
                         data-bs-target="#modalBorrarCuenta">
-                        Eliminar mi cuenta de Bonsai Do
+                        @lang('messages.Eliminar_Cuenta')
                     </button>
                 </div>
 
@@ -160,25 +157,24 @@
             <div class="modal-content border-0 shadow">
 
                 <div class="modal-header bg-danger text-white border-0">
-                    <h5 class="modal-title fw-bold" id="modalBorrarCuentaLabel">⚠️ Advertencia Crítica</h5>
+                    <h5 class="modal-title fw-bold" id="modalBorrarCuentaLabel">@lang('messages.Advertencia_critica')</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Cerrar"></button>
                 </div>
 
                 <div class="modal-body p-4 text-center">
-                    <h5 class="mb-3">¿Estás a punto de irte?</h5>
-                    <p class="text-muted">Si eliminas tu cuenta, se borrará <strong>de forma permanente</strong> todo tu
-                        historial de pedidos y tus datos personales.</p>
-                    <p class="text-danger fw-bold small mb-0">Esta acción no se puede deshacer de ninguna manera.</p>
+                    <h5 class="mb-3">@lang('messages.Pregunta_irte')</h5>
+                    <p class="text-muted">@lang('messages.Msg_eliminar')</p>
+                    <p class="text-danger fw-bold small mb-0">@lang('messages.No_Deshacer')</p>
                 </div>
 
                 <div class="modal-footer border-0 justify-content-center bg-light">
-                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">@lang('messages.Cancelar')</button>
 
                     <form method="POST" action="{{ route('profile.destroy') }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger px-4">Sí, eliminar definitivamente</button>
+                        <button type="submit" class="btn btn-danger px-4">@lang('messages.Si_eliminar')</button>
                     </form>
                 </div>
 

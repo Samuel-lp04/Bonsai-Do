@@ -29,19 +29,24 @@
                     <ul class="navbar-nav me-auto">
                         @if(Auth::check() && Auth::user()->rol === 'admin')
                             <li class="nav-item">
-                                <a class="nav-link text-success fw-bold" href="{{ route('pedidos.index') }}">📦 Pedidos
-                                    Clientes</a>
+                                <a class="nav-link text-success fw-bold" href="{{ route('pedidos.index') }}">
+                                    @lang('messages.Pedidos_Cli_navbar')
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-success fw-bold" href="{{ url('admin/productos') }}">🌱 Gestión
-                                    Bonsáis</a>
+                                <a class="nav-link text-success fw-bold" href="{{ url('admin/productos') }}">
+                                    @lang('messages.Gestion_Bonsai_navbar')
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-success fw-bold" href="{{ url('admin/categorias') }}">🔖 Gestión
-                                    Categorías</a>
+                                <a class="nav-link text-success fw-bold" href="{{ url('admin/categorias') }}">
+                                    @lang('messages.Gestion_Cat_navbar')
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-success fw-bold" href="{{ url('admin/favoritos') }}">❤️ Estadísticas de favoritos</a>
+                                <a class="nav-link text-success fw-bold" href="{{ url('admin/favoritos') }}">
+                                    @lang('messages.Fav_navbar')
+                                </a>
                             </li>
                         @else
                             <li class="nav-item">
