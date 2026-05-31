@@ -3,7 +3,10 @@
 
 @section('content')
     <div class="container mb-5">
-
+        <div class="selector-idiomas">
+            <a href="{{ route('lang.switch', 'es') }}">🇪🇸 Español</a>
+            <a href="{{ route('lang.switch', 'en') }}">🇬🇧 English</a>
+        </div>
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -12,8 +15,8 @@
         @endif
 
         <div class="text-center mb-5">
-            <h1 class="display-5 fw-bold">Nuestro Catálogo</h1>
-            <p class="text-muted">Encuentra la paz en la naturaleza</p>
+            <h1 class="display-5 fw-bold">@lang('messages.Catalogo_titulo')</h1>
+            <p class="text-muted">@lang('messages.Catalogo_subtitulo')</p>
         </div>
 
 
@@ -53,12 +56,17 @@
                             <h3 class="fs-5 fw-bold">{{ $producto->producto_nombre }}</h3>
 
                             <p class="text-muted small flex-grow-1">
-                                {{ Str::limit($producto->descripcion ?? 'Ejemplar seleccionado de nuestra colección privada.', 90) }}
+                                {{ $producto->descripcion }}
                             </p>
 
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fs-4 fw-bold text-dark">{{ number_format($producto->precio, 2) }} €</span>
-
+                                <form action="{{ route('carrito.add', $producto->producto_id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary rounded-pill px-3">
+                                        <i class="bi bi-cart-plus"></i>@lang('messages.Boton_compra')
+                                    </button>
+                                </form>
                                 <div class="d-flex gap-2">
                                     @auth
                                         @php
@@ -76,7 +84,7 @@
                                     <form action="{{ route('carrito.add', $producto->producto_id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-primary rounded-pill px-3">
-                                            <i class="bi bi-cart-plus"></i> + Comprar
+                                            <i class="bi bi-cart-plus"></i>@lang('messages.Boton_compra')
                                         </button>
                                     </form>
                                 </div>

@@ -15,6 +15,16 @@ Route::get('/', [CarroController::class, 'index']);
 
 Auth::routes();
 Route::redirect('/home', '/catalogo');
+
+Route::get('lang/{locale}', function ($locale) {
+    // Validamos que el idioma elegido esté permitido en tu web
+    if (in_array($locale, ['es', 'en'])) {
+        Session::put('locale', $locale); // Lo guardamos en la sesión
+    }
+    return Redirect::back(); // Devolvemos al usuario a la página donde estaba
+})->name('lang.switch');
+
+
     //CarroController
 Route::get('/catalogo', [CarroController::class, 'index'])->name('catalogo');
 Route::get('/catalogo/categoria/{id}', [CarroController::class, 'index'])->name('catalogo.categoria');
