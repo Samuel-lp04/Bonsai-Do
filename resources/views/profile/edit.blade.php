@@ -176,14 +176,14 @@
                                 @endforelse
 
                                 <div class="mt-4 d-flex gap-2 align-items-center">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-bonsai btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#modalNuevaDireccion">
                                         + Añadir otra dirección
                                     </button>
 
                                     @if($direcciones->isNotEmpty())
                                         <button type="submit" formaction="{{ route('direccion.editar.seleccionada') }}"
-                                            class="btn btn-outline-pizarra btn-sm">
+                                            class="btn btn-bonsai btn-sm">
                                             <i class="bi bi-pencil"></i> Editar marcada
                                         </button>
 
@@ -273,7 +273,7 @@
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-bonsai" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Guardar dirección</button>
                     </div>
                 </form>
@@ -295,7 +295,7 @@
                         <p class="text-center">Eliminarás la dirección marcada de tu cuenta</p>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-bonsai" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" form="form-compra" formaction="{{ route('direccion.borrar.seleccionada') }}"
                             class="btn btn-outline-danger">
                             Eliminar dirección

@@ -30,7 +30,7 @@
                             @endforelse
 
                             <div class="mt-4">
-                                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-bonsai btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#modalNuevaDireccion">
                                     + Añadir otra dirección
                                 </button>
@@ -90,7 +90,7 @@
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-bonsai" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Guardar dirección</button>
                     </div>
                 </form>

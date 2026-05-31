@@ -49,7 +49,7 @@
                                             </td>
                                             <td class="pe-4 py-3 text-end">
                                                 <a href="{{ route('pedidos.show', $pedido->id) }}"
-                                                    class="btn btn-info text-white">Ver Detalles</a>
+                                                    class="btn btn-primary text-white">Ver Detalles</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="text-center mt-4">
-                    <a href="{{ route('catalogo') }}" class="btn btn-outline-secondary">Seguir comprando</a>
+                    <a href="{{ route('catalogo') }}" class="btn btn-bonsai">Seguir comprando</a>
                 </div>
             </div>
         </div>
