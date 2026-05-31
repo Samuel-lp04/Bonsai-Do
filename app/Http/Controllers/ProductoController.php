@@ -30,8 +30,10 @@ class ProductoController extends Controller
     {
 
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'required|string|max:1000', 
+            'traducciones.es.nombre' => 'required|string|max:255',
+            'traducciones.es.descripcion' => 'required|string|max:1000', 
+            'traducciones.en.nombre' => 'nullable|string|max:255',
+            'traducciones.en.descripcion' => 'nullable|string|max:1000',
             'precio' => 'required|numeric|min:0', 
             'stock' => 'required|integer|min:0', 
             'imagen_url' => 'required|string|max:255',
@@ -48,9 +50,21 @@ class ProductoController extends Controller
         try {
             DB::transaction(function () use ($request) {
                 
-                $producto = Producto::create($request->except('categorias'));
+                $producto = Producto::create($request->only(['precio', 'stock', 'imagen_url', 'descuento_id']));
 
                 $producto->categorias()->sync($request->categorias);
+                $producto->traducciones()->create([
+                    'idioma'      => 'es',
+                    'nombre'      => $request->traducciones['es']['nombre'],
+                    'descripcion' => $request->traducciones['es']['descripcion'],
+                ]);
+                if (!empty($request->traducciones['en']['nombre'])) {
+                    $producto->traducciones()->create([
+                        'idioma'      => 'en',
+                        'nombre'      => $request->traducciones['en']['nombre'],
+                        'descripcion' => $request->traducciones['en']['descripcion'] ?? '',
+                    ]);
+                }
                 
             });
 
@@ -82,8 +96,10 @@ class ProductoController extends Controller
     {
     
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'required|string|max:1000', 
+            'traducciones.es.nombre' => 'required|string|max:255',
+            'traducciones.es.descripcion' => 'required|string|max:1000', 
+            'traducciones.en.nombre' => 'nullable|string|max:255',
+            'traducciones.en.descripcion' => 'nullable|string|max:1000',
             'precio' => 'required|numeric|min:0', 
             'stock' => 'required|integer|min:0', 
             'imagen_url' => 'required|string|max:255',
@@ -101,10 +117,26 @@ class ProductoController extends Controller
             DB::transaction(function () use ($request, $id) {
                 
                 $producto = Producto::findOrFail($id);
-                
-                $producto->update($request->except('categorias'));
+                $producto->update($request->only(['precio', 'stock', 'imagen_url', 'descuento_id']));
 
                 $producto->categorias()->sync($request->categorias);
+
+                $producto->traducciones()->updateOrCreate(
+                    ['idioma' => 'es'],
+                        [
+                            'nombre'      => $request->traducciones['es']['nombre'],
+                            'descripcion' => $request->traducciones['es']['descripcion'],
+                        ]
+                );
+                if (!empty($request->traducciones['en']['nombre'])) {
+                    $producto->traducciones()->updateOrCreate(
+                        ['idioma' => 'en'],
+                        [
+                            'nombre'      => $request->traducciones['en']['nombre'],
+                            'descripcion' => $request->traducciones['en']['descripcion'] ?? '',
+                        ]
+                    );
+                }
                 
             });
 

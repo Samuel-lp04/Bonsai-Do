@@ -14,16 +14,17 @@ use App\Notifications\PedidoConfirmado;
 class CarroController extends Controller
 {
     public function index($categoria_id = null){
-    $categorias = \App\Models\Categoria::all();
+        $categorias = \App\Models\Categoria::all();
+        $query = \App\Models\Producto::with('traducciones');
+        if ($categoria_id) {
+            $query->whereHas('categorias', function ($q) use ($categoria_id) {
+                $q->where('categorias.id', $categoria_id);
+            });
+        }
+        $productos = $query->get();    
 
-    if ($categoria_id) {
-        $productos = \App\Models\VistaCatalogo::where('categoria_id', $categoria_id)->get();
-    } else {
-        $productos = \App\Models\VistaCatalogo::all()->unique('producto_id');
+        return view('catalogo', compact('productos', 'categorias', 'categoria_id'));
     }
-
-    return view('catalogo', compact('productos', 'categorias', 'categoria_id'));
-}
 
     public function add(Request $request, $id)
     {

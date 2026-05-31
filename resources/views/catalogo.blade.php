@@ -42,7 +42,7 @@
                     <div class="card h-100 shadow-sm border-0 card-bonsai">
                         <div style="height: 250px; overflow: hidden;">
                             <img src="{{ asset($producto->imagen_url) }}" class="card-img-top h-100 w-100"
-                                style="object-fit: cover;" alt="{{ $producto->producto_nombre }}">
+                                style="object-fit: cover;" alt="{{ $producto->nombre }}">
                             <p class="text-danger mt-2">@lang('messages.Ruta_img') {{ asset($producto->imagen_url) }}</p>
                         </div>
 
@@ -53,7 +53,7 @@
                                 {{ $producto->categoria_nombre ?? __('messages.Sin_Cat') }}
                             </p>
 
-                            <h3 class="fs-5 fw-bold">{{ $producto->producto_nombre }}</h3>
+                            <h3 class="fs-5 fw-bold">{{ $producto->nombre }}</h3>
 
                             <p class="text-muted small flex-grow-1">
                                 {{ $producto->descripcion }}
@@ -64,9 +64,9 @@
                                 <div class="d-flex gap-2">
                                     @auth
                                         @php
-                                            $esFavorito = Auth::user()->favoritos->contains('id', $producto->producto_id);
+                                            $esFavorito = Auth::user()->favoritos->contains('id', $producto->id);
                                         @endphp
-                                        <form action="{{ route('favoritos.toggle', $producto->producto_id) }}" method="POST">
+                                        <form action="{{ route('favoritos.toggle', $producto->id) }}" method="POST">
                                             @csrf
                                             <button type="submit"
                                                 class="btn {{ $esFavorito ? 'btn-pizarra' : 'btn-outline-pizarra' }} rounded px-2"
@@ -75,7 +75,7 @@
                                             </button>
                                         </form>
                                     @endauth
-                                    <form action="{{ route('carrito.add', $producto->producto_id) }}" method="POST">
+                                    <form action="{{ route('carrito.add', $producto->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-primary rounded-pill px-3">
                                             <i class="bi bi-cart-plus"></i>@lang('messages.Boton_compra')
