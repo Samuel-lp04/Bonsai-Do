@@ -1,7 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+
+
     <div class="container mb-5 mt-4">
+        @error('direccion_id')
+            <div class="text-danger mt-2 fw-bold">
+                {{ $message }}
+            </div>
+        @enderror
         <h2 class="fw-bold mb-4">@lang('messages.Pago')</h2>
 
         <div class="row">
@@ -90,7 +97,8 @@
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@lang('messages.Cancelar')</button>
+                        <button type="button" class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal">@lang('messages.Cancelar')</button>
                         <button type="submit" class="btn btn-primary">@lang('messages.Guardar_direccion')</button>
                     </div>
                 </form>
