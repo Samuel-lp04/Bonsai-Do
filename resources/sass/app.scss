@@ -28,12 +28,51 @@ $border-radius: 0.25rem;
 
 
 @import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
 
 .card-bonsai {
     transition: all 0.3s ease;
+
+    img.card-img-top {
+        height: 180px;
+        object-fit: cover;
+    }
     
     &:hover {
         transform: translateY(-10px);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+}
+
+.btn-outline-pizarra {
+    background-color: $text-muted;
+    color: $body-bg;
+    border-color: $text-muted;
+    
+    &:hover {
+        background-color: darken($text-muted, 10%);
+        color: $body-bg;
+    }
+}
+
+.btn-outline-pizarra-oscuro {
+    color: $body-color;
+    border-color: $body-color;
+    background-color: transparent;
+    
+    &:hover {
+        background-color: $body-color;
+        color: $body-bg;
+    }
+}
+
+.btn-pizarra {
+    background-color: $primary;
+    color: $body-bg;
+    border-color: $primary;
+    
+    &:hover {
+        background-color: darken($primary, 10%);
+        color: $body-bg;
     }
 }

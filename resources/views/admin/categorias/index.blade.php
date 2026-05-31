@@ -52,5 +52,10 @@
             </table>
         </div>
     </div>
+    <div class="d-flex justify-content-end align-items-center mt-4">
+            <a href="{{ url('home') }}" class="btn btn-outline-pizarra-oscuro">
+                <i class="bi bi-arrow-left"></i> Volver al catálogo
+            </a>
+        </div>
 </div>
 @endsection

@@ -54,4 +54,8 @@ class Producto extends Model
     {
         return $this->belongsTo(Descuento::class, 'descuento_id');
     }
+
+    public function usuariosFavoritos(){
+        return $this->belongsToMany(User::class, 'favoritos', 'producto_id', 'user_id')->withPivot('tiempoCreacion')->withTimestamps();
+    }
 }

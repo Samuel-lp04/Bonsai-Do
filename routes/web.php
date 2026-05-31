@@ -8,6 +8,7 @@ use App\Http\Controllers\PedidoController;
 use App\Http\Middleware\CheckAdmin;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\FavoritoController;
 
 
 Route::get('/', [CarroController::class, 'index']);
@@ -42,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/perfil', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/perfil/password', [ProfileController::class, 'password'])->name('profile.password');
     Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/favoritos/toggle/{id}', [ FavoritoController::class, 'toggle'])->name('favoritos.toggle');
 });
 
 // Grupo de rutas EXCLUSIVAS para Administradores
@@ -49,5 +51,6 @@ Route::middleware(['auth', CheckAdmin::class])->group(function () {
     Route::resource('admin/productos', ProductoController::class);
     Route::get('admin/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
     Route::resource('admin/categorias', CategoriaController::class);
+    Route::get('admin/favoritos', [FavoritoController::class, 'listar'])->name('admin.favoritos.index');
 });
 

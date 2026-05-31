@@ -60,14 +60,34 @@
                             </p>
 
                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="fs-4 fw-bold">{{ number_format($producto->precio, 2) }} €</span>
-
+                                <span class="fs-4 fw-bold text-dark">{{ number_format($producto->precio, 2) }} €</span>
                                 <form action="{{ route('carrito.add', $producto->producto_id) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-primary rounded-pill px-3">
                                         <i class="bi bi-cart-plus"></i>@lang('messages.Boton_compra')
                                     </button>
                                 </form>
+                                <div class="d-flex gap-2">
+                                    @auth
+                                        @php
+                                            $esFavorito = Auth::user()->favoritos->contains('id', $producto->producto_id);
+                                        @endphp
+                                        <form action="{{ route('favoritos.toggle', $producto->producto_id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit"
+                                                class="btn {{ $esFavorito ? 'btn-pizarra' : 'btn-outline-pizarra' }} rounded px-2" title="Favorito">
+                                                <i class="bi bi-heart-fill fs-5"></i>
+                                            </button>
+                                        </form>
+                                    @endauth
+
+                                    <form action="{{ route('carrito.add', $producto->producto_id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary rounded-pill px-3">
+                                            <i class="bi bi-cart-plus"></i>@lang('messages.Boton_compra')
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
