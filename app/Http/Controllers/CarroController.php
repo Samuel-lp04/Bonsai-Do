@@ -11,8 +11,7 @@ use App\Notifications\PedidoConfirmado;
 
 class CarroController extends Controller
 {
-    public function index($categoria_id = null)
-{
+    public function index($categoria_id = null){
     $categorias = \App\Models\Categoria::all();
 
     if ($categoria_id) {
