@@ -30,7 +30,7 @@
                             @endforelse
 
                             <div class="mt-4">
-                                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-bonsai btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#modalNuevaDireccion">
                                     @lang('messages.Añadir_Direccion')
                                 </button>

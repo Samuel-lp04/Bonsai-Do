@@ -61,8 +61,6 @@
 
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fs-4 fw-bold text-dark">{{ number_format($producto->precio, 2) }} €</span>
-
-
                                 <div class="d-flex gap-2">
                                     @auth
                                         @php

@@ -44,6 +44,10 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/perfil/password', [ProfileController::class, 'password'])->name('profile.password');
     Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/favoritos/toggle/{id}', [ FavoritoController::class, 'toggle'])->name('favoritos.toggle');
+    Route::post('/direcciones/borrar-seleccionada', [ProfileController::class, 'borrarSeleccionada'])->name('direccion.borrar.seleccionada');
+    Route::post('/direcciones/editar-seleccionada', [ProfileController::class, 'editarSeleccionada'])->name('direccion.editar.seleccionada');
+    Route::put('/direcciones/{id}/actualizar', [ProfileController::class, 'actualizarDireccion'])->name('direccion.actualizar');
+
 });
 
 // Grupo de rutas EXCLUSIVAS para Administradores
