@@ -150,6 +150,54 @@
                     </div>
                 </div>
 
+                <!-- CRUD DIRECCIONES -->
+                <div class="card shadow-sm border-0 mb-4 p-3">
+                    <div class="card-body">
+                        <h3 class="fw-bold mb-4">Gestión de direcciones</h3>
+                        <div class="card-body">
+                            <form method="POST" id="form-compra">
+                                @csrf
+
+                                @forelse($direcciones as $dir)
+                                    <div class="form-check border p-3 mb-2 rounded">
+                                        <input class="form-check-input" type="radio" name="direccion_id" id="dir{{ $dir->id }}"
+                                            value="{{ $dir->id }}" data-calle="{{ $dir->calle }}"
+                                            data-numero="{{ $dir->numero }}" data-ciudad="{{ $dir->ciudad }}"
+                                            data-cp="{{ $dir->codigo_postal }}" required {{ $loop->first ? 'checked' : '' }}>
+                                        <label class="form-check-label ms-2" for="dir{{ $dir->id }}">
+                                            <strong>{{ $dir->calle }} {{ $dir->numero }}</strong><br>
+                                            <small class="text-muted">{{ $dir->ciudad }}, CP: {{ $dir->codigo_postal }}</small>
+                                        </label>
+                                    </div>
+                                @empty
+                                    <div class="alert alert-warning text-center">
+                                        No tienes direcciones guardadas.
+                                    </div>
+                                @endforelse
+
+                                <div class="mt-4 d-flex gap-2 align-items-center">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#modalNuevaDireccion">
+                                        + Añadir otra dirección
+                                    </button>
+
+                                    @if($direcciones->isNotEmpty())
+                                        <button type="submit" formaction="{{ route('direccion.editar.seleccionada') }}"
+                                            class="btn btn-outline-pizarra btn-sm">
+                                            <i class="bi bi-pencil"></i> Editar marcada
+                                        </button>
+
+                                        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#modalBorrarDireccion">
+                                            <i class="bi bi-trash"></i> Borrar dirección marcada
+                                        </button>
+                                    @endif
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- BOTÓN DE BORRAR CUENTA DISCRETO -->
                 <div class="text-center mt-5 mb-4">
                     <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
@@ -167,7 +215,6 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
-
                 <div class="modal-header bg-danger text-white border-0">
                     <h5 class="modal-title fw-bold" id="modalBorrarCuentaLabel">⚠️ Advertencia Crítica</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
@@ -190,7 +237,71 @@
                         <button type="submit" class="btn btn-danger px-4">Sí, eliminar definitivamente</button>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL NUEVA DIRECCION-->
+    <div class="modal fade" id="modalNuevaDireccion" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Nueva Dirección</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
+                <form action="{{ route('direccion.guardar') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label text-muted small mb-1">Calle</label>
+                            <input type="text" name="calle" class="form-control" placeholder="Ej: Avenida de la Palmera"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small mb-1">Número</label>
+                            <input type="number" name="numero" class="form-control" placeholder="Ej: 15" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label text-muted small mb-1">Ciudad</label>
+                                <input type="text" name="ciudad" class="form-control" placeholder="Ej: Sevilla" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label text-muted small mb-1">C. Postal</label>
+                                <input type="number" name="codigo_postal" class="form-control" placeholder="41012" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar dirección</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--Modal borrar direccion-->
+    <div class="modal fade" id="modalBorrarDireccion" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Borrar Dirección</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <form action="{{ route('direccion.borrar.seleccionada') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <p class="text-center">Eliminarás la dirección marcada de tu cuenta</p>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" form="form-compra" formaction="{{ route('direccion.borrar.seleccionada') }}"
+                            class="btn btn-outline-danger">
+                            Eliminar dirección
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
