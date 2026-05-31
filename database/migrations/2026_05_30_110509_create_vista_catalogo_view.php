@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement("CREATE OR REPLACE VIEW vista_catalogo AS SELECT p.id AS producto_id, p.nombre AS producto_nombre, p.precio, p.imagen_url, c.id AS categoria_id, c.nombre AS categoria_nombre FROM productos p LEFT JOIN categoria_producto cp ON p.id = cp.producto_id LEFT JOIN categorias c ON cp.categoria_id = c.id");
+        DB::statement("CREATE OR REPLACE VIEW vista_catalogo AS SELECT p.id AS producto_id, t.nombre AS producto_nombre, t.descripcion, t.idioma ,p.precio, p.imagen_url, c.id AS categoria_id, c.nombre AS categoria_nombre FROM productos p LEFT JOIN productos_traducciones t ON p.id = t.producto_id LEFT JOIN categoria_producto cp ON p.id = cp.producto_id LEFT JOIN categorias c ON cp.categoria_id = c.id");
     }
 
     /**

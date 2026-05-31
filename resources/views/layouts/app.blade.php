@@ -42,11 +42,11 @@
                             </li>
                         @else
                             <li class="nav-item">
-                                <a class="nav-link text-success fw-bold" href="{{ route('catalogo') }}">📖 Catálogo</a>
+                                <a class="nav-link text-success fw-bold" href="{{ route('catalogo') }}">@lang('messages.Catalogo_navbar')</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-success fw-bold" href="{{ route('carrito.ver') }}">
-                                    🛒 Carrito
+                                    @lang('messages.Carrito_navbar')
                                     <span class="badge bg-success rounded-pill">
                                         {{ count(session('carrito', [])) }}
                                     </span>
@@ -72,15 +72,15 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">⚙️ Mi Perfil</a>
+                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">@lang('messages.Perfil')</a>
                                     @if(Auth::user()->rol === 'cliente')
-                                    <a class="dropdown-item" href="{{ route('mis-pedidos') }}">🛍️ Mis Compras</a> @endif
+                                    <a class="dropdown-item" href="{{ route('mis-pedidos') }}">@lang('messages.Compras')</a> @endif
 
                                     <div class="dropdown-divider"></div>
 
                                     <a class="dropdown-item text-danger" href="{{ route('logout') }}"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        🚪 {{ ('Cerrar sesión') }}
+                                        @lang('messages.Cerrar sesion')
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
