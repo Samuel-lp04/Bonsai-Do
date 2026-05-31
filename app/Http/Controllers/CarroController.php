@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use GrahamCampbell\ResultType\Success;
+use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Pedido;
@@ -44,7 +46,7 @@ class CarroController extends Controller
         }
 
         session()->put('carrito', $carrito);
-        return back()->with('success', '¡' . $producto->nombre . ' añadido a tu cesta!');
+        return back()->with('success', '¡' . $producto->nombre . ' ' . __('messages.Success_Carrito'). ' !');
     }
 
     public function verCarrito()

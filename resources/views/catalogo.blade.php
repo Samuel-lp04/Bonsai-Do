@@ -24,7 +24,7 @@
             <div class="col-12 text-center">
                 <a href="{{ route('catalogo') }}"
                     class="btn {{ is_null($categoria_id) ? 'btn-primary' : 'btn-outline-secondary' }} rounded-pill me-2 mb-2 px-4">
-                    Todos
+                    @lang('messages.Boton_todos')
                 </a>
 
                 @foreach($categorias as $cat)
@@ -43,14 +43,14 @@
                         <div style="height: 250px; overflow: hidden;">
                             <img src="{{ asset($producto->imagen_url) }}" class="card-img-top h-100 w-100"
                                 style="object-fit: cover;" alt="{{ $producto->producto_nombre }}">
-                            <p class="text-danger mt-2">Ruta generada: {{ asset($producto->imagen_url) }}</p>
+                            <p class="text-danger mt-2">@lang('messages.Ruta_img') {{ asset($producto->imagen_url) }}</p>
                         </div>
 
                         <div class="card-body d-flex flex-column">
 
 
                             <p class="text-muted small">
-                                {{ $producto->categoria_nombre ?? 'Sin categoría' }}
+                                {{ $producto->categoria_nombre ?? __('messages.Sin_Cat') }}
                             </p>
 
                             <h3 class="fs-5 fw-bold">{{ $producto->producto_nombre }}</h3>
@@ -69,12 +69,12 @@
                                         <form action="{{ route('favoritos.toggle', $producto->producto_id) }}" method="POST">
                                             @csrf
                                             <button type="submit"
-                                                class="btn {{ $esFavorito ? 'btn-pizarra' : 'btn-outline-pizarra' }} rounded px-2" title="Favorito">
+                                                class="btn {{ $esFavorito ? 'btn-pizarra' : 'btn-outline-pizarra' }} rounded px-2"
+                                                title="Favorito">
                                                 <i class="bi bi-heart-fill fs-5"></i>
                                             </button>
                                         </form>
                                     @endauth
-
                                     <form action="{{ route('carrito.add', $producto->producto_id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-primary rounded-pill px-3">
