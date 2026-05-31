@@ -13,17 +13,18 @@ use App\Notifications\PedidoConfirmado;
 
 class CarroController extends Controller
 {
-    public function index($categoria_id = null){
-    $categorias = \App\Models\Categoria::all();
+    public function index($categoria_id = null)
+    {
+        $categorias = \App\Models\Categoria::all();
 
-    if ($categoria_id) {
-        $productos = \App\Models\VistaCatalogo::where('categoria_id', $categoria_id)->get();
-    } else {
-        $productos = \App\Models\VistaCatalogo::all()->unique('producto_id');
+        if ($categoria_id) {
+            $productos = \App\Models\VistaCatalogo::where('categoria_id', $categoria_id)->get();
+        } else {
+            $productos = \App\Models\VistaCatalogo::all()->unique('producto_id');
+        }
+
+        return view('catalogo', compact('productos', 'categorias', 'categoria_id'));
     }
-
-    return view('catalogo', compact('productos', 'categorias', 'categoria_id'));
-}
 
     public function add(Request $request, $id)
     {
@@ -46,7 +47,7 @@ class CarroController extends Controller
         }
 
         session()->put('carrito', $carrito);
-        return back()->with('success', '¡' . $producto->nombre . ' ' . __('messages.Success_Carrito'). ' !');
+        return back()->with('success', '¡' . $producto->nombre . ' ' . __('messages.Success_Carrito') . ' !');
     }
 
     public function verCarrito()
@@ -78,6 +79,13 @@ class CarroController extends Controller
 
     public function procesarCompra(Request $request)
     {
+        $request->validate([
+            'direccion_id' => 'required|exists:direcciones,id'
+        ], [
+            'direccion_id.required' => '⚠️ Debes seleccionar una dirección de envío para poder completar la compra.',
+            'direccion_id.exists' => 'La dirección seleccionada no es válida.'
+        ]);
+
         $carrito = session('carrito', []);
 
         if (empty($carrito)) {
@@ -85,6 +93,10 @@ class CarroController extends Controller
         }
 
         $direccion = Direccion::findOrFail($request->input('direccion_id'));
+
+        if (empty($direccion)) {
+            return redirect()->route('catalogo')->with('error', 'No existen direcciones.');
+        }
 
         $direccionString = $direccion->calle . ' ' . $direccion->numero . ', CP: ' . $direccion->codigo_postal . ' ' . $direccion->ciudad;
 
