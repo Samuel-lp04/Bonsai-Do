@@ -26,7 +26,7 @@ class Producto extends Model
         $idiomaActual = app()->getLocale();
         $traduccion = $this->traducciones->where('idioma', $idiomaActual)->first();
 
-        if (!$traduccion) {
+        if (!$traduccion || empty($traduccion->nombre)) {
             $traduccion = $this->traducciones->where('idioma', 'es')->first();
         }
 
@@ -38,7 +38,7 @@ class Producto extends Model
         $idiomaActual = app()->getLocale();
         $traduccion = $this->traducciones->where('idioma', $idiomaActual)->first();
 
-        if (!$traduccion) {
+        if (!$traduccion || empty($traduccion->descripcion)) {
             $traduccion = $this->traducciones->where('idioma', 'es')->first();
         }
 
