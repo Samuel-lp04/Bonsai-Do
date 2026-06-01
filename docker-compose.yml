@@ -1,7 +1,6 @@
 version: '3.8'
 services:
 
-  # El servidor Web y PHP para tu Laravel
   app:
     build: 
       context: .
@@ -13,8 +12,11 @@ services:
       - .:/var/www
     networks:
       - laravel_network
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "php artisan migrate:fresh --seed && php-fpm"
 
-  # Servidor web Nginx para que Laravel sea visible en el navegador
   webserver:
     image: nginx:alpine
     container_name: laravel_webserver
@@ -27,7 +29,6 @@ services:
     networks:
       - laravel_network
 
-  # La Base de Datos MySQL (Reemplaza a XAMPP)
   db:
     image: mysql:8.0
     container_name: laravel_db
@@ -41,8 +42,11 @@ services:
       - dbdata:/var/lib/mysql
     networks:
       - laravel_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
-  # PhpMyAdmin (Para ver tu base de datos visualmente)
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: laravel_phpmyadmin
