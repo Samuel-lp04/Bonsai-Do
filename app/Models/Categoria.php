@@ -33,6 +33,13 @@ class Categoria extends Model
         }
 
         return $traduccion ? $traduccion->descripcion : '';
+
+        return $traduccion ? $traduccion->descripcion : '';
+    }
+
+    public function productos()
+    {
+        return $this->belongsToMany(Producto::class);
     }
 }
 

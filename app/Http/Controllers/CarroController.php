@@ -93,6 +93,11 @@ class CarroController extends Controller
         }
 
         $direccion = Direccion::findOrFail($request->input('direccion_id'));
+
+
+        if (empty($direccion)) {
+            return redirect()->route('catalogo')->with('error', 'No existen direcciones.');
+        }
         $direccionString = $direccion->calle . ' ' . $direccion->numero . ', CP: ' . $direccion->codigo_postal . ' ' . $direccion->ciudad;
 
         $total = 0;
