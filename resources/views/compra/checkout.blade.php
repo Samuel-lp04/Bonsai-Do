@@ -9,6 +9,11 @@
                 {{ $message }}
             </div>
         @enderror
+        @if (session('error'))
+            <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                <strong>¡Atención!</strong> {{ session('error') }}
+            </div>
+        @endif
         <h2 class="fw-bold mb-4">@lang('messages.Pago')</h2>
 
         <div class="row">

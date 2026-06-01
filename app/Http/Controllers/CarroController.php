@@ -94,10 +94,10 @@ class CarroController extends Controller
 
         $direccion = Direccion::findOrFail($request->input('direccion_id'));
 
+
         if (empty($direccion)) {
             return redirect()->route('catalogo')->with('error', 'No existen direcciones.');
         }
-
         $direccionString = $direccion->calle . ' ' . $direccion->numero . ', CP: ' . $direccion->codigo_postal . ' ' . $direccion->ciudad;
 
         $total = 0;
@@ -105,35 +105,47 @@ class CarroController extends Controller
             $total += $item['precio'] * $item['cantidad'];
         }
 
-        $pedido = new Pedido();
-        $pedido->user_id = auth()->id();
-        $pedido->direccion_envio = $direccionString;
-        $pedido->total = $total;
-        $pedido->estado_pedido = 'En preparación';
-        $pedido->fecha_pedido = now();
-        $pedido->save();
+        \Illuminate\Support\Facades\DB::beginTransaction();
 
-        foreach ($carrito as $producto_id => $item) {
-            $detalle = new DetallePedido();
-            $detalle->pedido_id = $pedido->id;
-            $detalle->producto_id = $producto_id;
-            $detalle->cantidad = $item['cantidad'];
-            $detalle->precio_unitario = $item['precio'];
-            $detalle->save();
+        try {
+            $pedido = new Pedido();
+            $pedido->user_id = auth()->id();
+            $pedido->direccion_envio = $direccionString;
+            $pedido->total = $total;
+            $pedido->estado_pedido = 'En preparación';
+            $pedido->fecha_pedido = now();
+            $pedido->save();
 
-            $producto = Producto::find($producto_id);
-            if ($producto) {
+            foreach ($carrito as $producto_id => $item) {
+                $producto = Producto::find($producto_id);
+
+                if (!$producto || $producto->stock < $item['cantidad']) {
+                    throw new \Exception('Lo sentimos, no hay suficiente stock para: ' . $item['nombre']);
+                }
+
+                $detalle = new DetallePedido();
+                $detalle->pedido_id = $pedido->id;
+                $detalle->producto_id = $producto_id;
+                $detalle->cantidad = $item['cantidad'];
+                $detalle->precio_unitario = $item['precio'];
+                $detalle->save();
+
                 $producto->stock = $producto->stock - $item['cantidad'];
                 $producto->save();
             }
+
+            \Illuminate\Support\Facades\DB::commit();
+
+            auth()->user()->notify(new PedidoConfirmado($pedido, $carrito));
+            session()->forget('carrito');
+
+            return redirect()->route('mis-pedidos')->with('success', '¡Pedido #' . $pedido->id . ' realizado con éxito!');
+
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\DB::rollBack();
+
+            return redirect()->route('catalogo')->with('error', $e->getMessage());
         }
-
-        auth()->user()->notify(new PedidoConfirmado($pedido, $carrito));
-
-        session()->forget('carrito');
-
-
-        return redirect()->route('mis-pedidos')->with('success', '¡Pedido #' . $pedido->id . ' realizado con éxito!');
     }
 
     public function guardarDireccion(Request $request)

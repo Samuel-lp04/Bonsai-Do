@@ -10,6 +10,12 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                <strong>¡Atención!</strong> {{ session('error') }}
+            </div>
+        @endif
+
         <div class="text-center mb-5">
             <h1 class="display-5 fw-bold">@lang('messages.Catalogo_titulo')</h1>
             <p class="text-muted">@lang('messages.Catalogo_subtitulo')</p>
