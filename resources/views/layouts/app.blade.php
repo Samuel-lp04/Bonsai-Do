@@ -29,27 +29,32 @@
                     <ul class="navbar-nav me-auto">
                         @if(Auth::check() && Auth::user()->rol === 'admin')
                             <li class="nav-item">
-                                <a class="nav-link text-success fw-bold" href="{{ route('pedidos.index') }}">📦 Pedidos
-                                    Clientes</a>
+                                <a class="nav-link text-success fw-bold" href="{{ route('pedidos.index') }}">
+                                    @lang('messages.Pedidos_Cli_navbar')
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-success fw-bold" href="{{ url('admin/productos') }}">🌱 Gestión
-                                    Bonsáis</a>
+                                <a class="nav-link text-success fw-bold" href="{{ url('admin/productos') }}">
+                                    @lang('messages.Gestion_Bonsai_navbar')
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-success fw-bold" href="{{ url('admin/categorias') }}">🔖 Gestión
-                                    Categorías</a>
+                                <a class="nav-link text-success fw-bold" href="{{ url('admin/categorias') }}">
+                                    @lang('messages.Gestion_Cat_navbar')
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-success fw-bold" href="{{ url('admin/favoritos') }}">❤️ Estadísticas de favoritos</a>
+                                <a class="nav-link text-success fw-bold" href="{{ url('admin/favoritos') }}">
+                                    @lang('messages.Fav_navbar')
+                                </a>
                             </li>
                         @else
                             <li class="nav-item">
-                                <a class="nav-link text-success fw-bold" href="{{ route('catalogo') }}">📖 Catálogo</a>
+                                <a class="nav-link text-success fw-bold" href="{{ route('catalogo') }}">@lang('messages.Catalogo_navbar')</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-success fw-bold" href="{{ route('carrito.ver') }}">
-                                    🛒 Carrito
+                                    @lang('messages.Carrito_navbar')
                                     <span class="badge bg-success rounded-pill">
                                         {{ count(session('carrito', [])) }}
                                     </span>
@@ -75,15 +80,15 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">⚙️ Mi Perfil</a>
+                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">@lang('messages.Perfil')</a>
                                     @if(Auth::user()->rol === 'cliente')
-                                    <a class="dropdown-item" href="{{ route('mis-pedidos') }}">🛍️ Mis Compras</a> @endif
+                                    <a class="dropdown-item" href="{{ route('mis-pedidos') }}">@lang('messages.Compras')</a> @endif
 
                                     <div class="dropdown-divider"></div>
 
                                     <a class="dropdown-item text-danger" href="{{ route('logout') }}"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        🚪 {{ ('Cerrar sesión') }}
+                                        @lang('messages.Cerrar sesion')
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -96,8 +101,18 @@
                 </div>
             </div>
         </nav>
-
-        <main class="py-4">
+        
+        <main class="py-4 px-4">
+            <div class="btn-group btn-group-sm shadow-sm" role="group" aria-label="Selector de idiomas">
+                    <a href="{{ route('lang.switch', 'es') }}"
+                        class="btn {{ app()->getLocale() == 'es' ? 'btn-primary' : 'btn-bonsai' }}">
+                        🇪🇸 ES
+                    </a>
+                    <a href="{{ route('lang.switch', 'en') }}"
+                        class="btn {{ app()->getLocale() == 'en' ? 'btn-primary' : 'btn-bonsai' }}">
+                        🇬🇧 EN
+                    </a>
+                </div>
             @yield('content')
         </main>
     </div>

@@ -11,7 +11,7 @@ class FavoritoController extends Controller
         $user = Auth::user();
         $user->favoritos()->toggle([$id => ['tiempoCreacion' => now()] ]);
 
-        return back()->with('success', 'Lista de favoritos actualizada.');
+        return back()->with('success', __('messages.Success_Fav'));
 
     }
 

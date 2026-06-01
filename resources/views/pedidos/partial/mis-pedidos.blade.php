@@ -1,17 +1,15 @@
-@extends('layouts.app')
-@section('title', 'Mis Pedidos - Bonsai Dō')
-@section('content')
-    <div class="container mb-5">
+<div class="container-fluid mb-5 px-0">
 
-        <div class="text-center mb-5">
-            <h1 class="display-5 fw-bold">@lang('messages.Pedidos_titulo')</h1>
-            <p class="text-muted">@lang('messages.Pedidos_subtitulo')</p>
-        </div>
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">@lang('messages.Pedidos_titulo')</h1>
+        <p class="text-muted">@lang('messages.Pedidos_subtitulo')</p>
+    </div>
 
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body p-0">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
                         <table class="table table-hover mb-0 align-middle">
                             <thead class="table-light">
                                 <tr>
@@ -47,19 +45,19 @@
                                             @endif
                                         </td>
                                         <td class="pe-4 py-3 text-end">
-                                            <a href="{{ route('pedidos.show', $pedido->id) }}" class="btn btn-primary text-white">@lang('messages.Ver_Detalles')</a>
+                                            <a href="{{ route('pedidos.show', $pedido->id) }}"
+                                                class="btn btn-primary text-white">@lang('messages.Ver_Detalles')</a>
                                         </td>
                                     </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="text-center mt-4">
-                    <a href="{{ route('catalogo') }}" class="btn btn-bonsai">@lang('messages.Seguir_Comprando')</a>
-                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="{{ route('catalogo') }}" class="btn btn-bonsai">@lang('messages.Seguir_Comprando')</a>
             </div>
         </div>
     </div>
-@endsection
+</div>

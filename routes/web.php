@@ -15,6 +15,16 @@ Route::get('/', [CarroController::class, 'index']);
 
 Auth::routes();
 Route::redirect('/home', '/catalogo');
+
+Route::get('lang/{locale}', function ($locale) {
+    // Validamos que el idioma elegido esté permitido en tu web
+    if (in_array($locale, ['es', 'en'])) {
+        Session::put('locale', $locale); // Lo guardamos en la sesión
+    }
+    return Redirect::back(); // Devolvemos al usuario a la página donde estaba
+})->name('lang.switch');
+
+
     //CarroController
 Route::get('/catalogo', [CarroController::class, 'index'])->name('catalogo');
 Route::get('/catalogo/categoria/{id}', [CarroController::class, 'index'])->name('catalogo.categoria');
@@ -34,6 +44,10 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/perfil/password', [ProfileController::class, 'password'])->name('profile.password');
     Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/favoritos/toggle/{id}', [ FavoritoController::class, 'toggle'])->name('favoritos.toggle');
+    Route::post('/direcciones/borrar-seleccionada', [ProfileController::class, 'borrarSeleccionada'])->name('direccion.borrar.seleccionada');
+    Route::post('/direcciones/editar-seleccionada', [ProfileController::class, 'editarSeleccionada'])->name('direccion.editar.seleccionada');
+    Route::put('/direcciones/{id}/actualizar', [ProfileController::class, 'actualizarDireccion'])->name('direccion.actualizar');
+
 });
 
 // Grupo de rutas EXCLUSIVAS para Administradores

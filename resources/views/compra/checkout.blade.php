@@ -1,14 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
+
+
     <div class="container mb-5 mt-4">
-        <h2 class="fw-bold mb-4">Pago</h2>
+        @error('direccion_id')
+            <div class="text-danger mt-2 fw-bold">
+                {{ $message }}
+            </div>
+        @enderror
+
+
+        @if (session('error'))
+            <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                <strong>¡Atención!</strong> {{ session('error') }}
+            </div>
+        @endif
+        <h2 class="fw-bold mb-4">@lang('messages.Pago')</h2>
 
         <div class="row">
             <div class="col-md-7">
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 fw-bold">Selecciona una dirección de envío</h5>
+                        <h5 class="mb-0 fw-bold">@lang('messages.Direcciones')</h5>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('comprar.procesar') }}" method="POST" id="form-compra">
@@ -25,14 +39,14 @@
                                 </div>
                             @empty
                                 <div class="alert alert-warning text-center">
-                                    No tienes direcciones guardadas.
+                                    @lang('messages.No_Direcciones')
                                 </div>
                             @endforelse
 
                             <div class="mt-4">
-                                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-bonsai btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#modalNuevaDireccion">
-                                    + Añadir otra dirección
+                                    @lang('messages.Añadir_Direccion')
                                 </button>
                             </div>
                         </form>
@@ -43,14 +57,14 @@
             <div class="col-md-5">
                 <div class="card shadow-sm border-0">
                     <div class="card-body">
-                        <h4 class="fw-bold">Resumen del Pedido</h4>
+                        <h4 class="fw-bold">@lang('messages.Resumen_Pedido')</h4>
                         <hr>
                         <div class="d-flex justify-content-between mb-4">
-                            <span class="fs-5">TOTAL:</span>
+                            <span class="fs-5">@lang('messages.Total')</span>
                             <span class="fs-4 fw-bold text-success">{{ number_format($total_del_carro, 2) }} €</span>
                         </div>
                         <button type="submit" form="form-compra" class="btn btn-bonsai btn-lg w-100">
-                            CONFIRMAR COMPRA
+                            @lang('messages.Confirmar_Compra')
                         </button>
                     </div>
                 </div>
@@ -62,7 +76,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Nueva Dirección</h5>
+                    <h5 class="modal-title fw-bold">@lang('messages.Nueva_direccion')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
@@ -70,28 +84,29 @@
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label class="form-label text-muted small mb-1">Calle</label>
+                            <label class="form-label text-muted small mb-1">@lang('messages.Calle')</label>
                             <input type="text" name="calle" class="form-control" placeholder="Ej: Avenida de la Palmera"
                                 required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small mb-1">Número</label>
+                            <label class="form-label text-muted small mb-1">@lang('messages.Numero')</label>
                             <input type="number" name="numero" class="form-control" placeholder="Ej: 15" required>
                         </div>
                         <div class="row">
                             <div class="col-md-8 mb-3">
-                                <label class="form-label text-muted small mb-1">Ciudad</label>
+                                <label class="form-label text-muted small mb-1">@lang('messages.Ciudad')</label>
                                 <input type="text" name="ciudad" class="form-control" placeholder="Ej: Sevilla" required>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label text-muted small mb-1">C. Postal</label>
+                                <label class="form-label text-muted small mb-1">@lang('messages.C_Postal')</label>
                                 <input type="number" name="codigo_postal" class="form-control" placeholder="41012" required>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Guardar dirección</button>
+                        <button type="button" class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal">@lang('messages.Cancelar')</button>
+                        <button type="submit" class="btn btn-primary">@lang('messages.Guardar_direccion')</button>
                     </div>
                 </form>
             </div>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use GrahamCampbell\ResultType\Success;
+use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Pedido;
@@ -11,19 +13,19 @@ use App\Notifications\PedidoConfirmado;
 
 class CarroController extends Controller
 {
-    public function index($categoria_id = null)
-{
-    $categorias = \App\Models\Categoria::all();
 
-    if ($categoria_id) {
-        $productos = \App\Models\VistaCatalogo::where('categoria_id', $categoria_id)->get();
-    } else {
-        $productos = \App\Models\VistaCatalogo::all()->unique('producto_id');
+    public function index($categoria_id = null){
+        $categorias = \App\Models\Categoria::all();
+        $query = \App\Models\Producto::with('traducciones');
+        if ($categoria_id) {
+            $query->whereHas('categorias', function ($q) use ($categoria_id) {
+                $q->where('categorias.id', $categoria_id);
+            });
+        }
+        $productos = $query->get();    
+
+        return view('catalogo', compact('productos', 'categorias', 'categoria_id'));
     }
-
-    return view('catalogo', compact('productos', 'categorias', 'categoria_id'));
-}
-
     public function add(Request $request, $id)
     {
 
@@ -45,7 +47,7 @@ class CarroController extends Controller
         }
 
         session()->put('carrito', $carrito);
-        return back()->with('success', '¡' . $producto->nombre . ' añadido a tu cesta!');
+        return back()->with('success', '¡' . $producto->nombre . ' ' . __('messages.Success_Carrito') . ' !');
     }
 
     public function verCarrito()
@@ -77,6 +79,13 @@ class CarroController extends Controller
 
     public function procesarCompra(Request $request)
     {
+        $request->validate([
+            'direccion_id' => 'required|exists:direcciones,id'
+        ], [
+            'direccion_id.required' => '⚠️ Debes seleccionar una dirección de envío para poder completar la compra.',
+            'direccion_id.exists' => 'La dirección seleccionada no es válida.'
+        ]);
+
         $carrito = session('carrito', []);
 
         if (empty($carrito)) {
@@ -84,7 +93,6 @@ class CarroController extends Controller
         }
 
         $direccion = Direccion::findOrFail($request->input('direccion_id'));
-
         $direccionString = $direccion->calle . ' ' . $direccion->numero . ', CP: ' . $direccion->codigo_postal . ' ' . $direccion->ciudad;
 
         $total = 0;
@@ -92,35 +100,47 @@ class CarroController extends Controller
             $total += $item['precio'] * $item['cantidad'];
         }
 
-        $pedido = new Pedido();
-        $pedido->user_id = auth()->id();
-        $pedido->direccion_envio = $direccionString;
-        $pedido->total = $total;
-        $pedido->estado_pedido = 'En preparación';
-        $pedido->fecha_pedido = now();
-        $pedido->save();
+        \Illuminate\Support\Facades\DB::beginTransaction();
 
-        foreach ($carrito as $producto_id => $item) {
-            $detalle = new DetallePedido();
-            $detalle->pedido_id = $pedido->id;
-            $detalle->producto_id = $producto_id;
-            $detalle->cantidad = $item['cantidad'];
-            $detalle->precio_unitario = $item['precio'];
-            $detalle->save();
+        try {
+            $pedido = new Pedido();
+            $pedido->user_id = auth()->id();
+            $pedido->direccion_envio = $direccionString;
+            $pedido->total = $total;
+            $pedido->estado_pedido = 'En preparación';
+            $pedido->fecha_pedido = now();
+            $pedido->save();
 
-            $producto = Producto::find($producto_id);
-            if ($producto) {
+            foreach ($carrito as $producto_id => $item) {
+                $producto = Producto::find($producto_id);
+
+                if (!$producto || $producto->stock < $item['cantidad']) {
+                    throw new \Exception('Lo sentimos, no hay suficiente stock para: ' . $item['nombre']);
+                }
+
+                $detalle = new DetallePedido();
+                $detalle->pedido_id = $pedido->id;
+                $detalle->producto_id = $producto_id;
+                $detalle->cantidad = $item['cantidad'];
+                $detalle->precio_unitario = $item['precio'];
+                $detalle->save();
+
                 $producto->stock = $producto->stock - $item['cantidad'];
                 $producto->save();
             }
+
+            \Illuminate\Support\Facades\DB::commit();
+
+            auth()->user()->notify(new PedidoConfirmado($pedido, $carrito));
+            session()->forget('carrito');
+
+            return redirect()->route('mis-pedidos')->with('success', '¡Pedido #' . $pedido->id . ' realizado con éxito!');
+
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\DB::rollBack();
+
+            return redirect()->route('catalogo')->with('error', $e->getMessage());
         }
-
-        auth()->user()->notify(new PedidoConfirmado($pedido, $carrito));
-
-        session()->forget('carrito');
-
-
-        return redirect()->route('mis-pedidos')->with('success', '¡Pedido #' . $pedido->id . ' realizado con éxito!');
     }
 
     public function guardarDireccion(Request $request)
