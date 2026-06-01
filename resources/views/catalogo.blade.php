@@ -3,10 +3,6 @@
 
 @section('content')
     <div class="container mb-5">
-        <div class="selector-idiomas">
-            <a href="{{ route('lang.switch', 'es') }}">🇪🇸 Español</a>
-            <a href="{{ route('lang.switch', 'en') }}">🇬🇧 English</a>
-        </div>
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -50,7 +46,16 @@
 
 
                             <p class="text-muted small">
-                                {{ $producto->categoria_nombre ?? __('messages.Sin_Cat') }}
+                                @forelse ($producto->categorias as $categoria)
+                                    @php
+                                        $traduccion = $categoria->traducciones->where('idioma', app()->getLocale())->first();
+                                        $nombreCategoria = $traduccion ? $traduccion->nombre : ($categoria->traducciones->first()->nombre ?? 'Categoría sin nombre');
+                                    @endphp
+
+                                    {{ $nombreCategoria }}@if(!$loop->last), @endif
+                                @empty
+                                    {{ __('messages.Sin_Cat') }}
+                                @endforelse
                             </p>
 
                             <h3 class="fs-5 fw-bold">{{ $producto->nombre }}</h3>
@@ -62,19 +67,21 @@
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="fs-4 fw-bold text-dark">{{ number_format($producto->precio, 2) }} €</span>
                                 <div class="d-flex gap-2">
-                                    @auth
-                                        @php
-                                            $esFavorito = Auth::user()->favoritos->contains('id', $producto->id);
-                                        @endphp
-                                        <form action="{{ route('favoritos.toggle', $producto->id) }}" method="POST">
-                                            @csrf
-                                            <button type="submit"
-                                                class="btn {{ $esFavorito ? 'btn-pizarra' : 'btn-outline-pizarra' }} rounded px-2"
-                                                title="Favorito">
-                                                <i class="bi bi-heart-fill fs-5"></i>
-                                            </button>
-                                        </form>
-                                    @endauth
+                                    @if(Auth::check() && Auth::user()->rol === 'cliente')
+                                        @auth
+                                            @php
+                                                $esFavorito = Auth::user()->favoritos->contains('id', $producto->id);
+                                            @endphp
+                                            <form action="{{ route('favoritos.toggle', $producto->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="btn {{ $esFavorito ? 'btn-pizarra' : 'btn-outline-pizarra' }} rounded px-2"
+                                                    title="Favorito">
+                                                    <i class="bi bi-heart-fill fs-5"></i>
+                                                </button>
+                                            </form>
+                                        @endauth
+                                    @endif
                                     <form action="{{ route('carrito.add', $producto->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-primary rounded-pill px-3">

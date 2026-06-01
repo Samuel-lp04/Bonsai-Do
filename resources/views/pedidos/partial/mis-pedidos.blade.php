@@ -1,8 +1,8 @@
 <div class="container-fluid mb-5 px-0">
 
     <div class="text-center mb-5">
-        <h1 class="display-5 fw-bold">Mis Pedidos</h1>
-        <p class="text-muted">Sigue el rastro de tus bonsáis hasta tu hogar</p>
+        <h1 class="display-5 fw-bold">@lang('messages.Pedidos_titulo')</h1>
+        <p class="text-muted">@lang('messages.Pedidos_subtitulo')</p>
     </div>
 
     <div class="row justify-content-center">
@@ -13,11 +13,11 @@
                         <table class="table table-hover mb-0 align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th scope="col" class="ps-4 py-3">Nº de Pedido</th>
-                                    <th scope="col" class="py-3">Fecha</th>
-                                    <th scope="col" class="py-3">Total</th>
-                                    <th scope="col" class="pe-4 py-3 text-end">Estado</th>
-                                    <th scope="col" class="pe-4 py-3 text-end">Detalles</th>
+                                    <th scope="col" class="ps-4 py-3">@lang('messages.N_Pedido')</th>
+                                    <th scope="col" class="py-3">@lang('messages.Fecha')</th>
+                                    <th scope="col" class="py-3">@lang('messages.total')</th>
+                                    <th scope="col" class="pe-4 py-3 text-end">@lang('messages.Estado')</th>
+                                    <th scope="col" class="pe-4 py-3 text-end">@lang('messages.Detalles')</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -46,7 +46,7 @@
                                         </td>
                                         <td class="pe-4 py-3 text-end">
                                             <a href="{{ route('pedidos.show', $pedido->id) }}"
-                                                class="btn btn-primary text-white">Ver Detalles</a>
+                                                class="btn btn-primary text-white">@lang('messages.Ver_Detalles')</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -56,7 +56,7 @@
                 </div>
             </div>
             <div class="text-center mt-4">
-                <a href="{{ route('catalogo') }}" class="btn btn-bonsai">Seguir comprando</a>
+                <a href="{{ route('catalogo') }}" class="btn btn-bonsai">@lang('messages.Seguir_Comprando')</a>
             </div>
         </div>
     </div>

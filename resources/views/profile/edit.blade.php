@@ -4,7 +4,6 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
-
                 <!-- Título de la página -->
                 <div class="text-center mb-5">
                     <h1 class="display-5 fw-bold text-dark">@lang('messages.Perfil_titulo')</h1>
@@ -29,7 +28,8 @@
 
                             <div class="row">
                                 <div class="col-md-6 mb-4">
-                                    <label for="name" class="form-label text-muted fw-semibold">@lang('messages.Nombre')</label>
+                                    <label for="name"
+                                        class="form-label text-muted fw-semibold">@lang('messages.Nombre')</label>
                                     <input type="text"
                                         class="form-control py-2 px-3 border @error('name') is-invalid @enderror" id="name"
                                         name="name" value="{{ old('name', Auth::user()->name) }}" required>
@@ -37,7 +37,8 @@
                                 </div>
 
                                 <div class="col-md-6 mb-4">
-                                    <label for="telefono" class="form-label text-muted fw-semibold">@lang('messages.Telefono')</label>
+                                    <label for="telefono"
+                                        class="form-label text-muted fw-semibold">@lang('messages.Telefono')</label>
                                     <input type="text"
                                         class="form-control py-2 px-3 border @error('telefono') is-invalid @enderror"
                                         id="telefono" name="telefono" value="{{ old('telefono', Auth::user()->telefono) }}"
@@ -47,7 +48,8 @@
                             </div>
 
                             <div class="mb-4">
-                                <label for="email" class="form-label text-muted fw-semibold">@lang('messages.Correo_Electronico')</label>
+                                <label for="email"
+                                    class="form-label text-muted fw-semibold">@lang('messages.Correo_Electronico')</label>
                                 <input type="email"
                                     class="form-control py-2 px-3 border @error('email') is-invalid @enderror" id="email"
                                     name="email" value="{{ old('email', Auth::user()->email) }}" required>
@@ -55,7 +57,8 @@
                             </div>
 
                             <div class="text-end">
-                                <button type="submit" class="btn btn-primary px-4 py-2">@lang('messages.Guardar_Cambios')</button>
+                                <button type="submit"
+                                    class="btn btn-primary px-4 py-2">@lang('messages.Guardar_Cambios')</button>
                             </div>
                         </form>
                     </div>
@@ -70,7 +73,8 @@
                             @method('PUT')
 
                             <div class="mb-4">
-                                <label for="current_password" class="form-label text-muted fw-semibold">@lang('messages.Contraseña_Actual')</label>
+                                <label for="current_password"
+                                    class="form-label text-muted fw-semibold">@lang('messages.Contraseña_Actual')</label>
                                 <input type="password"
                                     class="form-control py-2 px-3 border @error('current_password') is-invalid @enderror"
                                     id="current_password" name="current_password" required>
@@ -79,7 +83,8 @@
 
                             <div class="row">
                                 <div class="col-md-6 mb-4">
-                                    <label for="password" class="form-label text-muted fw-semibold">@lang('messages.Nueva_Contraseña')</label>
+                                    <label for="password"
+                                        class="form-label text-muted fw-semibold">@lang('messages.Nueva_Contraseña')</label>
                                     <input type="password"
                                         class="form-control py-2 px-3 border @error('password') is-invalid @enderror"
                                         id="password" name="password" required>
@@ -87,114 +92,116 @@
                                 </div>
 
                                 <div class="col-md-6 mb-4">
-                                    <label for="password_confirmation" class="form-label text-muted fw-semibold">@lang('messages.Confirmar_Contraseña')</label>
+                                    <label for="password_confirmation"
+                                        class="form-label text-muted fw-semibold">@lang('messages.Confirmar_Contraseña')</label>
                                     <input type="password" class="form-control py-2 px-3 border" id="password_confirmation"
                                         name="password_confirmation" required>
                                 </div>
                             </div>
 
                             <div class="text-end">
-                                <button type="submit" class="btn btn-outline-primary px-4 py-2">@lang('messages.Actualizar_Contraseña')</button>
+                                <button type="submit"
+                                    class="btn btn-outline-primary px-4 py-2">@lang('messages.Actualizar_Contraseña')</button>
                             </div>
                         </form>
                     </div>
                 </div>
+                @if(Auth::check() && Auth::user()->rol === 'cliente')
+                    <!-- LISTA DE FAVORITOS -->
+                    <div class="card shadow-sm border-0 mb-4 p-3">
+                        <div class="card-body">
+                            <h3 class="fw-bold mb-4">@lang('messages.Bonsais_Fav')</h3>
 
-                <!-- LISTA DE FAVORITOS -->
-                <div class="card shadow-sm border-0 mb-4 p-3">
-                    <div class="card-body">
-                        <h3 class="fw-bold mb-4">@lang('messages.Bonsais_Fav')</h3>
+                            @if($favoritos->isEmpty())
+                                <div class="text-center py-4">
+                                    <i class="bi bi-heart text-muted display-1"></i>
+                                    <p class="text-muted mt-3">@lang('messages.No_Fav')</p>
+                                    <a href="{{ route('catalogo') }}"
+                                        class="btn btn-outline-success mt-2">@lang('messages.Explorar_Catálogo')</a>
+                                </div>
 
-                        @if($favoritos->isEmpty())
-                            <div class="text-center py-4">
-                                <i class="bi bi-heart text-muted display-1"></i>
-                                <p class="text-muted mt-3">@lang('messages.No_Fav')</p>
-                                <a href="{{ route('catalogo') }}" class="btn btn-outline-success mt-2">@lang('messages.Explorar_Catálogo')</a>
-                            </div>
+                            @else
+                                <div class="row row-cols-1 row-cols-md-3 g-4">
+                                    @foreach($favoritos as $producto)
+                                        <div class="col">
+                                            <div class="card h-100 border-0 shadow-sm card-bonsai">
+                                                <img src="{{ asset($producto->imagen_url) }}" class="card-img-top h-100 w-100"
+                                                    style="object-fit: cover;" alt="{{ $producto->producto_nombre }}">
+                                                <div class="card-body text-center">
+                                                    <h3 class="fs-5 fw-bold">{{ $producto->nombre }}</h3>
+                                                    <p class="fs-4 fw-bold text-dark">{{ number_format($producto->precio, 2) }} €</p>
 
-                        @else
-                            <div class="row row-cols-1 row-cols-md-3 g-4">
-                                @foreach($favoritos as $producto)
-                                    <div class="col">
-                                        <div class="card h-100 border-0 shadow-sm card-bonsai">
-                                            <img src="{{ asset($producto->imagen_url) }}" class="card-img-top h-100 w-100"
-                                                style="object-fit: cover;" alt="{{ $producto->producto_nombre }}">
-                                            <div class="card-body text-center">
-                                                <h3 class="fs-5 fw-bold">{{ $producto->nombre }}</h3>
-                                                <p class="fs-4 fw-bold text-dark">{{ number_format($producto->precio, 2) }} €</p>
-
-                                                <form action="{{ route('favoritos.toggle', $producto->id) }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
-                                                        <i class="bi bi-heartbreak"></i> @lang('messages.Quitar_Fav')
-                                                    </button>
-                                                </form>
+                                                    <form action="{{ route('favoritos.toggle', $producto->id) }}" method="POST">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                                                            <i class="bi bi-heartbreak"></i> @lang('messages.Quitar_Fav')
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
-                </div>
-
-                <!-- SECCION DE PEDIDOS -->
-
-                <div class="card shadow-sm border-0 mb-4 p-3">
-                    <div class="card-body">
-                        <h3 class="fw-bold mb-4">Mis Pedidos recientes</h3>
-                        @include('pedidos.partial.mis-pedidos')
-                    </div>
-                </div>
-
-                <!-- CRUD DIRECCIONES -->
-                <div class="card shadow-sm border-0 mb-4 p-3">
-                    <div class="card-body">
-                        <h3 class="fw-bold mb-4">Gestión de direcciones</h3>
-                        <div class="card-body">
-                            <form method="POST" id="form-compra">
-                                @csrf
-
-                                @forelse($direcciones as $dir)
-                                    <div class="form-check border p-3 mb-2 rounded">
-                                        <input class="form-check-input" type="radio" name="direccion_id" id="dir{{ $dir->id }}"
-                                            value="{{ $dir->id }}" data-calle="{{ $dir->calle }}"
-                                            data-numero="{{ $dir->numero }}" data-ciudad="{{ $dir->ciudad }}"
-                                            data-cp="{{ $dir->codigo_postal }}" required {{ $loop->first ? 'checked' : '' }}>
-                                        <label class="form-check-label ms-2" for="dir{{ $dir->id }}">
-                                            <strong>{{ $dir->calle }} {{ $dir->numero }}</strong><br>
-                                            <small class="text-muted">{{ $dir->ciudad }}, CP: {{ $dir->codigo_postal }}</small>
-                                        </label>
-                                    </div>
-                                @empty
-                                    <div class="alert alert-warning text-center">
-                                        No tienes direcciones guardadas.
-                                    </div>
-                                @endforelse
-
-                                <div class="mt-4 d-flex gap-2 align-items-center">
-                                    <button type="button" class="btn btn-bonsai btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#modalNuevaDireccion">
-                                        + Añadir otra dirección
-                                    </button>
-
-                                    @if($direcciones->isNotEmpty())
-                                        <button type="submit" formaction="{{ route('direccion.editar.seleccionada') }}"
-                                            class="btn btn-bonsai btn-sm">
-                                            <i class="bi bi-pencil"></i> Editar marcada
-                                        </button>
-
-                                        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#modalBorrarDireccion">
-                                            <i class="bi bi-trash"></i> Borrar dirección marcada
-                                        </button>
-                                    @endif
+                                    @endforeach
                                 </div>
-                            </form>
+                            @endif
                         </div>
                     </div>
-                </div>
 
+                    <!-- SECCION DE PEDIDOS -->
+                    <div class="card shadow-sm border-0 mb-4 p-3">
+                        <div class="card-body">
+                            <h3 class="fw-bold mb-4">@lang('messages.Pedidos_Recientes')</h3>
+                            @include('pedidos.partial.mis-pedidos')
+                        </div>
+                    </div>
+
+                    <!-- CRUD DIRECCIONES -->
+                    <div class="card shadow-sm border-0 mb-4 p-3">
+                        <div class="card-body">
+                            <h3 class="fw-bold mb-4">@lang('messages.Gestion_Direcciones')</h3>
+                            <div class="card-body">
+                                <form method="POST" id="form-compra">
+                                    @csrf
+
+                                    @forelse($direcciones as $dir)
+                                        <div class="form-check border p-3 mb-2 rounded">
+                                            <input class="form-check-input" type="radio" name="direccion_id" id="dir{{ $dir->id }}"
+                                                value="{{ $dir->id }}" data-calle="{{ $dir->calle }}"
+                                                data-numero="{{ $dir->numero }}" data-ciudad="{{ $dir->ciudad }}"
+                                                data-cp="{{ $dir->codigo_postal }}" required {{ $loop->first ? 'checked' : '' }}>
+                                            <label class="form-check-label ms-2" for="dir{{ $dir->id }}">
+                                                <strong>{{ $dir->calle }} {{ $dir->numero }}</strong><br>
+                                                <small class="text-muted">{{ $dir->ciudad }}, CP: {{ $dir->codigo_postal }}</small>
+                                            </label>
+                                        </div>
+                                    @empty
+                                        <div class="alert alert-warning text-center">
+                                            @lang('messages.No_Direcciones')
+                                        </div>
+                                    @endforelse
+
+                                    <div class="mt-4 d-flex gap-2 align-items-center">
+                                        <button type="button" class="btn btn-bonsai btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#modalNuevaDireccion">
+                                            @lang('messages.Añadir_Direccion')
+                                        </button>
+
+                                        @if($direcciones->isNotEmpty())
+                                            <button type="submit" formaction="{{ route('direccion.editar.seleccionada') }}"
+                                                class="btn btn-bonsai btn-sm">
+                                                <i class="bi bi-pencil"></i> @lang('messages.Editar_Direccion')
+                                            </button>
+
+                                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#modalBorrarDireccion">
+                                                <i class="bi bi-trash"></i> @lang('messages.Borrar_Direccion')
+                                            </button>
+                                        @endif
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 <!-- BOTÓN DE BORRAR CUENTA DISCRETO -->
                 <div class="text-center mt-5 mb-4">
                     <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
@@ -225,7 +232,8 @@
                 </div>
 
                 <div class="modal-footer border-0 justify-content-center bg-light">
-                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">@lang('messages.Cancelar')</button>
+                    <button type="button" class="btn btn-secondary px-4"
+                        data-bs-dismiss="modal">@lang('messages.Cancelar')</button>
 
                     <form method="POST" action="{{ route('profile.destroy') }}">
                         @csrf
@@ -241,7 +249,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Nueva Dirección</h5>
+                    <h5 class="modal-title fw-bold">@lang('messages.Nueva_direccion')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
@@ -249,28 +257,28 @@
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label class="form-label text-muted small mb-1">Calle</label>
+                            <label class="form-label text-muted small mb-1">@lang('messages.Calle')</label>
                             <input type="text" name="calle" class="form-control" placeholder="Ej: Avenida de la Palmera"
                                 required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-muted small mb-1">Número</label>
+                            <label class="form-label text-muted small mb-1">@lang('messages.Numero')</label>
                             <input type="number" name="numero" class="form-control" placeholder="Ej: 15" required>
                         </div>
                         <div class="row">
                             <div class="col-md-8 mb-3">
-                                <label class="form-label text-muted small mb-1">Ciudad</label>
+                                <label class="form-label text-muted small mb-1">@lang('messages.Ciudad')</label>
                                 <input type="text" name="ciudad" class="form-control" placeholder="Ej: Sevilla" required>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label text-muted small mb-1">C. Postal</label>
+                                <label class="form-label text-muted small mb-1">@lang('messages.C_Postal')</label>
                                 <input type="number" name="codigo_postal" class="form-control" placeholder="41012" required>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-bonsai" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Guardar dirección</button>
+                        <button type="button" class="btn btn-bonsai" data-bs-dismiss="modal">@lang('messages.Cancelar')</button>
+                        <button type="submit" class="btn btn-primary">@lang('messages.Guardar_direccion')</button>
                     </div>
                 </form>
             </div>
@@ -281,20 +289,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Borrar Dirección</h5>
+                    <h5 class="modal-title fw-bold">@lang('messages.Borrar_Direccion_Titulo')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <form action="{{ route('direccion.borrar.seleccionada') }}" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <p class="text-center">Eliminarás la dirección marcada de tu cuenta</p>
+                        <p class="text-center">@lang('messages.Borrar_Direccion_Texto')</p>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-bonsai" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-bonsai" data-bs-dismiss="modal">@lang('messages.Cancelar')</button>
                         <button type="submit" form="form-compra" formaction="{{ route('direccion.borrar.seleccionada') }}"
                             class="btn btn-outline-danger">
-                            Eliminar dirección
+                            @lang('messages.Borrar_Direccion_boton')
                         </button>
                     </div>
                 </form>

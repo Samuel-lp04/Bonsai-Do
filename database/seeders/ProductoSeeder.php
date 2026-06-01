@@ -14,6 +14,25 @@ class ProductoSeeder extends Seeder
      */
     public function run(): void
     {
+
+        $catInteriorId = DB::table('categorias')->insertGetId([]);
+        DB::table('categorias_traducciones')->insert([
+            ['categoria_id' => $catInteriorId, 'idioma' => 'es', 'nombre' => 'Bonsái de Interior', 'descripcion' => 'Especies que se adaptan bien a las condiciones climáticas del interior del hogar.'],
+            ['categoria_id' => $catInteriorId, 'idioma' => 'en', 'nombre' => 'Indoor Bonsai', 'descripcion' => 'Species that adapt well to indoor climatic conditions.']
+        ]);
+
+        $catExteriorId = DB::table('categorias')->insertGetId([]);
+        DB::table('categorias_traducciones')->insert([
+            ['categoria_id' => $catExteriorId, 'idioma' => 'es', 'nombre' => 'Bonsái de Exterior', 'descripcion' => 'Especies que necesitan sentir el paso de las estaciones, el sol y el viento.'],
+            ['categoria_id' => $catExteriorId, 'idioma' => 'en', 'nombre' => 'Outdoor Bonsai', 'descripcion' => 'Species that need to feel the changing seasons, sun, and wind.']
+        ]);
+
+        $catOmonoId = DB::table('categorias')->insertGetId([]);
+        DB::table('categorias_traducciones')->insert([
+            ['categoria_id' => $catOmonoId, 'idioma' => 'es', 'nombre' => 'Bonsái Omono', 'descripcion' => 'Bonsáis de tamaño grande, generalmente requieren cuatro manos para ser movidos.'],
+            ['categoria_id' => $catOmonoId, 'idioma' => 'en', 'nombre' => 'Omono Bonsai', 'descripcion' => 'Large sized bonsais, generally requiring four hands to be moved.']
+        ]);
+
         $productos = [
             [
                 'datos_base' => [
@@ -21,9 +40,8 @@ class ProductoSeeder extends Seeder
                     'stock' => 15,
                     'imagen_url' => 'images/FicusRetusa.jpg',
                     'descuento_id' => null,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
                 ],
+                'categorias' => [$catInteriorId],
                 'traducciones' => [
                     [
                         'idioma' => 'es',
@@ -43,9 +61,8 @@ class ProductoSeeder extends Seeder
                     'stock' => 8,
                     'imagen_url' => 'images/OlmoChino.jpg',
                     'descuento_id' => null,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
                 ],
+                'categorias' => [$catExteriorId],
                 'traducciones' => [
                     [
                         'idioma' => 'es',
@@ -65,9 +82,8 @@ class ProductoSeeder extends Seeder
                     'stock' => 5,
                     'imagen_url' => 'images/ArceJapones.jpg',
                     'descuento_id' => null,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
                 ],
+                'categorias' => [$catExteriorId],
                 'traducciones' => [
                     [
                         'idioma' => 'es',
@@ -87,9 +103,8 @@ class ProductoSeeder extends Seeder
                     'stock' => 2,
                     'imagen_url' => 'images/PinoNegroJapones.jpg',
                     'descuento_id' => null,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
                 ],
+                'categorias' => [$catExteriorId, $catOmonoId],
                 'traducciones' => [
                     [
                         'idioma' => 'es',
@@ -105,12 +120,9 @@ class ProductoSeeder extends Seeder
             ]
         ];
 
-        // Recorremos el array e insertamos en ambas tablas
         foreach ($productos as $item) {
-            // 1. Insertamos en 'productos' y guardamos el ID generado
             $productoId = DB::table('productos')->insertGetId($item['datos_base']);
 
-            // 2. Preparamos el array de traducciones con el ID del producto
             $traduccionesAInsertar = [];
             foreach ($item['traducciones'] as $traduccion) {
                 $traduccionesAInsertar[] = [
@@ -118,13 +130,17 @@ class ProductoSeeder extends Seeder
                     'idioma' => $traduccion['idioma'],
                     'nombre' => $traduccion['nombre'],
                     'descripcion' => $traduccion['descripcion'],
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
                 ];
             }
 
-            // 3. Insertamos todas las traducciones de este producto de golpe
             DB::table('productos_traducciones')->insert($traduccionesAInsertar);
+            
+            foreach ($item['categorias'] as $catId) {
+                DB::table('categoria_producto')->insert([
+                    'producto_id' => $productoId,
+                    'categoria_id' => $catId
+                ]);
+            }
         }
     }
 }

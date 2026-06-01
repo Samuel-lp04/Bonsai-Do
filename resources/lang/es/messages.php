@@ -80,4 +80,12 @@ return [
     'Volver_listado'=> 'Volver al Listado',
     'Ver_Detalles'=> 'Ver Detalles',
     'Volver_Catalogo'=> 'VOLVER AL CATALOGO',
+    'Pedidos_Recientes'=> 'Mis Pedidos Recientes',
+    'Gestion_Direcciones'=> 'Gestión de direcciones',
+    'Editar_Direccion'=> 'Editar marcada',
+    'Borrar_Direccion'=> 'Borrar dirección marcada',
+    'Borrar_Direccion_Titulo'=> 'Borrar Dirección',
+    'Borrar_Direccion_Texto'=> 'Eliminarás la dirección marcada de tu cuenta',
+    'Borrar_Direccion_boton'=> 'Eliminar dirección',
+    'Modificar_Direccion'=> 'Modificar Dirección',
 ];
