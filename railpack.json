@@ -18,6 +18,7 @@
     "libsqlite3-dev",
     "libssl-dev",
     "libxml2-dev",
+    "libzip-dev",
     "pkg-config",
     "re2c",
     "zlib1g-dev"
