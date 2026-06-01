@@ -101,8 +101,18 @@
                 </div>
             </div>
         </nav>
-
-        <main class="py-4">
+        
+        <main class="py-4 px-4">
+            <div class="btn-group btn-group-sm shadow-sm" role="group" aria-label="Selector de idiomas">
+                    <a href="{{ route('lang.switch', 'es') }}"
+                        class="btn {{ app()->getLocale() == 'es' ? 'btn-primary' : 'btn-bonsai' }}">
+                        🇪🇸 ES
+                    </a>
+                    <a href="{{ route('lang.switch', 'en') }}"
+                        class="btn {{ app()->getLocale() == 'en' ? 'btn-primary' : 'btn-bonsai' }}">
+                        🇬🇧 EN
+                    </a>
+                </div>
             @yield('content')
         </main>
     </div>
